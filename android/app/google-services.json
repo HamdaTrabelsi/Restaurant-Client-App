@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "823363281824",
+    "project_id": "projet-ppe-48cfc",
+    "storage_bucket": "projet-ppe-48cfc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823363281824:android:6a0ecdecda63477e53fac5",
+        "android_client_info": {
+          "package_name": "com.sesame.foodz_client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823363281824-v6139dl8c7t32tf1qair3a0v16u1lfk1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeJaBKgwLf9t2ii92t6r_BklC86yZL9EA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "823363281824-v6139dl8c7t32tf1qair3a0v16u1lfk1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
