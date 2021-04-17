@@ -1,7 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sesame.foodz_client">
 
+
     <uses-permission android:name="android.permission.INTERNET"/>
+
 
     <application
         android:label="foodz_client"
@@ -61,6 +63,9 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
+
+
 
     </application>
 </manifest>

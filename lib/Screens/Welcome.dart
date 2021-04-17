@@ -3,11 +3,9 @@ import 'package:clippy_flutter/arc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodz_client/Screens/HomeScreen.dart';
 import 'package:foodz_client/Screens/RegisterScreen.dart';
-import 'package:foodz_client/provider/google_sign_in.dart';
 import 'package:foodz_client/utils/FoodColors.dart';
 import 'package:foodz_client/utils/FoodConstant.dart';
 import 'package:foodz_client/utils/FoodImages.dart';
@@ -18,6 +16,7 @@ import 'package:foodz_client/utils/DbExtension.dart';
 import 'package:foodz_client/utils/colors.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static String tag = 'WelcomeScreen';
@@ -28,9 +27,11 @@ class WelcomeScreen extends StatefulWidget {
 
 class WelcomeScreenState extends State<WelcomeScreen> {
   final googleSignIn = GoogleSignIn();
-  FacebookLogin _facebookLogin = FacebookLogin();
+  //FacebookLogin _facebookLogin = FacebookLogin();
   final _auth = FirebaseAuth.instance;
   User _user;
+
+  //final fbLogin = FacebookLogin();
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +139,19 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                       ),
                       mOption(food_colorPrimary, food_ic_fb, food_lbl_facebook,
                           food_white, food_white, fn: () async {
-                        await _handleFBLogin();
+// Trigger the sign-in flow
+                        final AccessToken result =
+                            await FacebookAuth.instance.login();
+
+                        // Create a credential from the access token
+                        final FacebookAuthCredential facebookAuthCredential =
+                            FacebookAuthProvider.credential(result.token);
+
+                        // Once signed in, return the UserCredential
+                        await FirebaseAuth.instance
+                            .signInWithCredential(facebookAuthCredential);
+
+                        Navigator.pushNamed(context, HomeScreen.tag);
                       }),
                       SizedBox(height: width * 0.05),
                       Row(
@@ -190,7 +203,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
       ),
     );
   }
-
+/*
   Future _handleFBLogin() async {
     FacebookLoginResult _result = await _facebookLogin.logIn(['mail']);
     switch (_result.status) {
@@ -198,7 +211,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
         print("cancelled By User");
         break;
       case FacebookLoginStatus.error:
-        print("error");
+        print("OH NO THIS IS AN ERROR");
         break;
       case FacebookLoginStatus.loggedIn:
         await _loginWithFacebook(_result);
@@ -216,5 +229,5 @@ class WelcomeScreenState extends State<WelcomeScreen> {
       _user = a.user;
     });
     Navigator.pushNamed(context, HomeScreen.tag);
-  }
+  }*/
 }
