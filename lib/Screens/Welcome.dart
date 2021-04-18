@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodz_client/Screens/HomeScreen.dart';
+import 'package:foodz_client/Screens/MainScreen.dart';
 import 'package:foodz_client/Screens/RegisterScreen.dart';
 import 'package:foodz_client/utils/FoodColors.dart';
 import 'package:foodz_client/utils/FoodConstant.dart';
@@ -133,7 +134,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                             await FirebaseAuth.instance
                                 .signInWithCredential(credential);
 
-                            Navigator.pushNamed(context, HomeScreen.tag);
+                            Navigator.pushNamed(context, MainScreen.tag);
                           }
                         },
                       ),
@@ -151,7 +152,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                         await FirebaseAuth.instance
                             .signInWithCredential(facebookAuthCredential);
 
-                        Navigator.pushNamed(context, HomeScreen.tag);
+                        Navigator.pushNamed(context, MainScreen.tag);
                       }),
                       SizedBox(height: width * 0.05),
                       Row(

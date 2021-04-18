@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:foodz_client/Screens/HomeScreen.dart';
+import 'package:foodz_client/Screens/MainScreen.dart';
 import 'package:foodz_client/Screens/RegisterScreen.dart';
 import 'package:foodz_client/utils/Extension.dart';
 import 'package:foodz_client/utils/T3Constant.dart';
@@ -124,7 +125,7 @@ class LoginScreenState extends State<LoginScreen> {
                         final user = await _auth.signInWithEmailAndPassword(
                             email: email, password: password);
                         if (user != null) {
-                          Navigator.pushNamed(context, HomeScreen.tag);
+                          Navigator.pushNamed(context, MainScreen.tag);
                         }
                       } catch (e) {
                         print(e);

@@ -1,104 +1,192 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:foodz_client/Models/FoodModel.dart';
-import 'package:foodz_client/Screens/LoginScreen.dart';
-import 'package:foodz_client/Screens/Welcome.dart';
-import 'package:foodz_client/utils/FoodColors.dart';
-import 'package:foodz_client/utils/FoodConstant.dart';
-import 'package:foodz_client/utils/FoodDataGenerator.dart';
-import 'package:foodz_client/utils/FoodExtension.dart';
-import 'package:foodz_client/utils/FoodImages.dart';
-import 'package:foodz_client/utils/FoodString.dart';
-import 'package:foodz_client/utils/FoodWidget.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
-// import 'FoodAddAddress.dart';
-// import 'FoodBookCart.dart';
-// import 'FoodDescription.dart';
-// import 'FoodFavourite.dart';
-// import 'FoodOrder.dart';
-// import 'FoodProfile.dart';
-// import 'FoodSignIn.dart';
-// import 'FoodViewRestaurants.dart';
-
-final _firestore = FirebaseFirestore.instance;
-User loggedInUser;
-final googleSignIn = GoogleSignIn();
-final _auth = FirebaseAuth.instance;
+import 'package:foodz_client/Screens/DishesScreen.dart';
+//import 'package:restaurant_ui_kit/screens/dishes.dart';
+import 'package:foodz_client/Widgets/grid_product.dart';
+import 'package:foodz_client/Widgets/home_category.dart';
+import 'package:foodz_client/Widgets/slider_item.dart';
+import 'package:foodz_client/utils/Template/foods.dart';
+import 'package:foodz_client/utils/Template/categories.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeScreen extends StatefulWidget {
-  static String tag = '/FoodDashboard';
-
+  static String tag = '/HomeScreen';
   @override
-  HomeScreenState createState() => HomeScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class HomeScreenState extends State<HomeScreen> {
-  void getCurrentUser() {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-      }
-    } catch (e) {
-      print(e);
+class _HomeScreenState extends State<HomeScreen>
+    with AutomaticKeepAliveClientMixin<HomeScreen> {
+  List<T> map<T>(List list, Function handler) {
+    List<T> result = [];
+    for (var i = 0; i < list.length; i++) {
+      result.add(handler(i, list[i]));
     }
+
+    return result;
   }
 
-  @override
-  void initState() {
-    super.initState();
-    getCurrentUser();
-  }
+  int _current = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      color: Colors.blueGrey.shade900,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Logged In',
-            style: TextStyle(color: Colors.white),
-          ),
-          SizedBox(height: 8),
-          CircleAvatar(
-            maxRadius: 25,
-            backgroundImage: (NetworkImage(
-                /*loggedInUser.photoURL*/ "https://static.scientificamerican.com/sciam/cache/file/7A715AD8-449D-4B5A-ABA2C5D92D9B5A21_source.png")),
-          ),
-          SizedBox(height: 8),
-          // Text(
-          //   'Name: ' + loggedInUser.displayName,
-          //   style: TextStyle(color: Colors.white),
-          // ),
-          SizedBox(height: 8),
-          Text(
-            'Email : ' + loggedInUser.email,
-            style: TextStyle(color: Colors.white),
-          ),
-          SizedBox(height: 8),
-          ElevatedButton(
-            onPressed: () async {
-              if (googleSignIn.currentUser != null) {
-                await googleSignIn.disconnect();
-              }
-              _auth.signOut();
-              Navigator.pushNamed(context, WelcomeScreen.tag);
-            },
-            child: Text('Logout'),
-          )
-        ],
+    super.build(context);
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
+        child: ListView(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "Dishes",
+                  style: TextStyle(
+                    fontSize: 23,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                FlatButton(
+                  child: Text(
+                    "View More",
+                    style: TextStyle(
+//                      fontSize: 22,
+//                      fontWeight: FontWeight.w800,
+                      color: Theme.of(context).accentColor,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return DishesScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+
+            SizedBox(height: 10.0),
+
+            //Slider Here
+
+            CarouselSlider(
+              items: map<Widget>(
+                foods,
+                (index, i) {
+                  Map food = foods[index];
+                  return SliderItem(
+                    img: food['img'],
+                    isFav: false,
+                    name: food['name'],
+                    rating: 5.0,
+                    raters: 23,
+                  );
+                },
+              ).toList(),
+              options: CarouselOptions(
+                height: MediaQuery.of(context).size.height / 2.4,
+
+                autoPlay: true,
+//                enlargeCenterPage: true,
+                viewportFraction: 1.0,
+//              aspectRatio: 2.0,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _current = index;
+                  });
+                },
+              ),
+            ),
+            SizedBox(height: 20.0),
+
+            Text(
+              "Food Categories",
+              style: TextStyle(
+                fontSize: 23,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            SizedBox(height: 10.0),
+
+            Container(
+              height: 65.0,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: categories == null ? 0 : categories.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Map cat = categories[index];
+                  return HomeCategory(
+                    icon: cat['icon'],
+                    title: cat['name'],
+                    items: cat['items'].toString(),
+                    isHome: true,
+                  );
+                },
+              ),
+            ),
+
+            SizedBox(height: 20.0),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "Popular Items",
+                  style: TextStyle(
+                    fontSize: 23,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                FlatButton(
+                  child: Text(
+                    "View More",
+                    style: TextStyle(
+//                      fontSize: 22,
+//                      fontWeight: FontWeight.w800,
+                      color: Theme.of(context).accentColor,
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+            SizedBox(height: 10.0),
+
+            GridView.builder(
+              shrinkWrap: true,
+              primary: false,
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: MediaQuery.of(context).size.width /
+                    (MediaQuery.of(context).size.height / 1.25),
+              ),
+              itemCount: foods == null ? 0 : foods.length,
+              itemBuilder: (BuildContext context, int index) {
+//                Food food = Food.fromJson(foods[index]);
+                Map food = foods[index];
+//                print(foods);
+//                print(foods.length);
+                return GridProduct(
+                  img: food['img'],
+                  isFav: false,
+                  name: food['name'],
+                  rating: 5.0,
+                  raters: 23,
+                );
+              },
+            ),
+
+            SizedBox(height: 30),
+          ],
+        ),
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

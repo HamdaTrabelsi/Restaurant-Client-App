@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodz_client/Screens/HomeScreen.dart';
 import 'package:foodz_client/Screens/LoginScreen.dart';
+import 'package:foodz_client/Screens/MainScreen.dart';
 import 'package:foodz_client/utils/T3Constant.dart';
 import 'package:foodz_client/utils/T3Images.dart';
 import 'package:foodz_client/utils/colors.dart';
@@ -117,7 +118,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                               await _auth.createUserWithEmailAndPassword(
                                   email: email, password: password);
                           if (newUser != null) {
-                            Navigator.pushNamed(context, HomeScreen.tag);
+                            Navigator.pushNamed(context, MainScreen.tag);
                           }
                         } catch (e) {
                           print(e);

@@ -39,6 +39,9 @@ dependencies:
   google_sign_in: ^5.0.2
   provider: ^5.0.0
   flutter_facebook_auth: "^1.0.0"
+  font_awesome_flutter: ^8.5.0
+  shared_preferences: ^2.0.5
+  carousel_slider: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -59,6 +62,27 @@ flutter:
   assets:
     - images/restaurant/
     - images/food/
+    - images/template/logo.png
+    - images/template/cc.png
+    - images/template/on1.png
+    - images/template/on2.png
+    - images/template/on3.png
+    - images/template/food1.jpeg
+    - images/template/food2.jpeg
+    - images/template/food3.jpeg
+    - images/template/food4.jpeg
+    - images/template/food5.jpeg
+    - images/template/food6.jpeg
+    - images/template/food7.jpeg
+    - images/template/food8.jpeg
+    - images/template/food9.jpeg
+    - images/template/food10.jpeg
+    - images/template/food11.jpeg
+    - images/template/food12.jpg
+    - images/template/cm1.jpeg
+    - images/template/cm2.jpeg
+    - images/template/cm3.jpeg
+    - images/template/cm4.jpeg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
