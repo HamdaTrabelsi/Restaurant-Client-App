@@ -1,6 +1,6 @@
-# foodz_client
+# foodz Client
 
-A new Flutter application.
+Projet PPE: Partie Client
 
 ## Getting Started
 
