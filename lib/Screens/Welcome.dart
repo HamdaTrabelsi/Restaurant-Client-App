@@ -99,7 +99,13 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                     width: width * 0.13,
                     height: width * 0.13,
                     child:
-                        Icon(Icons.arrow_forward, color: food_textColorPrimary),
+                        //Icon(Icons.arrow_forward, color: food_textColorPrimary),
+                        IconButton(
+                            icon: Icon(Icons.arrow_forward),
+                            onPressed: () {
+                              Navigator.pushNamed(context, MainScreen.tag);
+                            },
+                            color: food_textColorPrimary),
                   ),
                 ),
                 Container(

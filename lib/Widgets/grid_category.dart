@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:foodz_client/Screens/DetailsScreen.dart';
-import 'package:foodz_client/Screens/PlateDetailsScreen.dart';
 //import 'package:restaurant_ui_kit/screens/details.dart';
 import 'package:foodz_client/utils/Template/const.dart';
 import 'package:foodz_client/Widgets/smooth_star_rating.dart';
 
-class GridProduct extends StatelessWidget {
+class GridCategory extends StatelessWidget {
   final String name;
   final String img;
   final bool isFav;
-  final double rating;
-  final int raters;
+  //final double rating;
+  //final int raters;
 
-  GridProduct(
-      {Key key,
-      @required this.name,
-      @required this.img,
-      @required this.isFav,
-      @required this.rating,
-      @required this.raters})
-      : super(key: key);
+  GridCategory({
+    Key key,
+    @required this.name,
+    @required this.img,
+    @required this.isFav,
+    //@required this.rating,
+    //@required this.raters
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +40,24 @@ class GridProduct extends StatelessWidget {
                   ),
                 ),
               ),
+              /*Positioned(
+                right: -10.0,
+                bottom: 3.0,
+                child: RawMaterialButton(
+                  onPressed: () {},
+                  fillColor: Colors.white,
+                  shape: CircleBorder(),
+                  elevation: 4.0,
+                  child: Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Icon(
+                      isFav ? Icons.favorite : Icons.favorite_border,
+                      color: Colors.red,
+                      size: 17,
+                    ),
+                  ),
+                ),
+              ),*/
             ],
           ),
           Padding(
@@ -54,11 +71,11 @@ class GridProduct extends StatelessWidget {
               maxLines: 2,
             ),
           ),
-          Padding(
+          /*Padding(
             padding: EdgeInsets.only(bottom: 5.0, top: 2.0),
             child: Row(
               children: <Widget>[
-                StarRating(
+                SmoothStarRating(
                   starCount: 5,
                   color: Constants.ratingBG,
                   allowHalfRating: true,
@@ -73,14 +90,14 @@ class GridProduct extends StatelessWidget {
                 ),
               ],
             ),
-          ),
+          ),*/
         ],
       ),
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) {
-              return PlateDetailsScreen();
+              return DetailsScreen();
             },
           ),
         );

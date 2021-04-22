@@ -9,9 +9,11 @@ import 'package:foodz_client/Screens/HomeScreen.dart';
 import 'package:foodz_client/Screens/IntroScreen.dart';
 import 'package:foodz_client/Screens/LoginScreen.dart';
 import 'package:foodz_client/Screens/MainScreen.dart';
+import 'package:foodz_client/Screens/ReservationsScreen.dart';
 import 'package:foodz_client/Screens/NotificationScreen.dart';
 import 'package:foodz_client/Screens/ProfileScreen.dart';
 import 'package:foodz_client/Screens/RegisterScreen.dart';
+import 'package:foodz_client/Screens/WriteReviewScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:foodz_client/Screens/SearchScreen.dart';
 import 'package:foodz_client/provider/app_provider.dart';
@@ -63,6 +65,8 @@ class MyApp extends StatelessWidget {
           NotificationScreen.tag: (context) => NotificationScreen(),
           ProfileScreen.tag: (context) => ProfileScreen(),
           SearchScreen.tag: (context) => SearchScreen(),
+          WriteReview.tag: (context) => WriteReview(),
+          ReservationsScreen.tag: (context) => ReservationsScreen(),
         },
       );
     });

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodz_client/Screens/CartScreen.dart';
@@ -5,9 +7,17 @@ import 'package:foodz_client/Screens/FavouriteScreen.dart';
 import 'package:foodz_client/Screens/NotificationScreen.dart';
 import 'package:foodz_client/Screens/ProfileScreen.dart';
 import 'package:foodz_client/Screens/SearchScreen.dart';
+import 'package:foodz_client/Screens/ReservationsScreen.dart';
 import 'package:foodz_client/utils/Template/const.dart';
 import 'package:foodz_client/Widgets/badge.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'HomeScreen.dart';
+
+final _firestore = FirebaseFirestore.instance;
+User loggedInUser;
+final googleSignIn = GoogleSignIn();
+final _auth = FirebaseAuth.instance;
+//final fbSignIn = Facebook
 
 class MainScreen extends StatefulWidget {
   static String tag = '/MainScreen';
@@ -17,9 +27,19 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  void getCurrentUser() {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   PageController _pageController;
   int _page = 0;
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -59,7 +79,8 @@ class _MainScreenState extends State<MainScreen> {
             HomeScreen(),
             FavouriteScreen(),
             SearchScreen(),
-            CartScreen(),
+            //CartScreen(),
+            ReservationsScreen(),
             ProfileScreen(),
           ],
         ),
@@ -100,9 +121,19 @@ class _MainScreenState extends State<MainScreen> {
                     : Theme.of(context).textTheme.caption.color,
                 onPressed: () => _pageController.jumpToPage(2),
               ),
+              // IconButton(
+              //   icon: IconBadge(
+              //     icon: Icons.shopping_cart,
+              //     size: 24.0,
+              //   ),
+              //   color: _page == 3
+              //       ? Theme.of(context).accentColor
+              //       : Theme.of(context).textTheme.caption.color,
+              //   onPressed: () => _pageController.jumpToPage(3),
+              // ),
               IconButton(
-                icon: IconBadge(
-                  icon: Icons.shopping_cart,
+                icon: Icon(
+                  Icons.bookmark,
                   size: 24.0,
                 ),
                 color: _page == 3
@@ -146,6 +177,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
+    getCurrentUser();
     _pageController = PageController();
   }
 

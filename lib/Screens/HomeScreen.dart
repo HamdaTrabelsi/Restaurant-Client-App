@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:foodz_client/Screens/DishesScreen.dart';
 //import 'package:restaurant_ui_kit/screens/dishes.dart';
 import 'package:foodz_client/Widgets/grid_product.dart';
+import 'package:foodz_client/Widgets/grid_category.dart';
+import 'package:foodz_client/Widgets/Category_Item.dart';
 import 'package:foodz_client/Widgets/home_category.dart';
 import 'package:foodz_client/Widgets/slider_item.dart';
+import 'package:foodz_client/utils/Template/Restaurants.dart';
 import 'package:foodz_client/utils/Template/foods.dart';
 import 'package:foodz_client/utils/Template/categories.dart';
+import 'package:foodz_client/utils/Template/cuisines.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -39,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Dishes",
+                  "Featured Restaurants",
                   style: TextStyle(
                     fontSize: 23,
                     fontWeight: FontWeight.w800,
@@ -73,6 +77,19 @@ class _HomeScreenState extends State<HomeScreen>
 
             CarouselSlider(
               items: map<Widget>(
+                restos,
+                (index, i) {
+                  Map res = restos[index];
+                  return SliderItem(
+                    img: res['img'],
+                    isFav: false,
+                    name: res['name'],
+                    rating: 5.0,
+                    raters: 23,
+                  );
+                },
+              ).toList(),
+              /*map<Widget>(
                 foods,
                 (index, i) {
                   Map food = foods[index];
@@ -84,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen>
                     raters: 23,
                   );
                 },
-              ).toList(),
+              ).toList(),*/
               options: CarouselOptions(
                 height: MediaQuery.of(context).size.height / 2.4,
 
@@ -102,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen>
             SizedBox(height: 20.0),
 
             Text(
-              "Food Categories",
+              "Type",
               style: TextStyle(
                 fontSize: 23,
                 fontWeight: FontWeight.w800,
@@ -127,6 +144,34 @@ class _HomeScreenState extends State<HomeScreen>
                 },
               ),
             ),
+            SizedBox(height: 20.0),
+            Text(
+              "Food Categories",
+              style: TextStyle(
+                fontSize: 23,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            SizedBox(height: 10.0),
+
+            //SizedBox(height: 20.0),
+
+            Container(
+              height: MediaQuery.of(context).size.height / 6,
+              child: ListView.builder(
+                primary: false,
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: categs == null ? 0 : categs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Map cat = categs[index];
+
+                  return CategoryItem(
+                    cat: cat,
+                  );
+                },
+              ),
+            ),
 
             SizedBox(height: 20.0),
 
@@ -134,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Popular Items",
+                  "Cuisines",
                   style: TextStyle(
                     fontSize: 23,
                     fontWeight: FontWeight.w800,
@@ -161,21 +206,30 @@ class _HomeScreenState extends State<HomeScreen>
               physics: NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
+                //childAspectRatio: MediaQuery.of(context).size.width /
+                //    (MediaQuery.of(context).size.height / 1.25),
                 childAspectRatio: MediaQuery.of(context).size.width /
-                    (MediaQuery.of(context).size.height / 1.25),
+                    (MediaQuery.of(context).size.height / 1.4),
               ),
-              itemCount: foods == null ? 0 : foods.length,
+              itemCount: restos == null ? 0 : restos.length,
               itemBuilder: (BuildContext context, int index) {
 //                Food food = Food.fromJson(foods[index]);
-                Map food = foods[index];
+                Map cui = restos[index];
 //                print(foods);
 //                print(foods.length);
-                return GridProduct(
+                /*return GridProduct(
                   img: food['img'],
                   isFav: false,
                   name: food['name'],
                   rating: 5.0,
                   raters: 23,
+                );*/
+                return GridCategory(
+                  img: cui['img'],
+                  isFav: false,
+                  name: cui['name'],
+                  //rating: 5.0,
+                  //raters: 23,
                 );
               },
             ),

@@ -3,14 +3,14 @@ import 'package:foodz_client/Screens/DetailsScreen.dart';
 import 'package:foodz_client/utils/Template/const.dart';
 import 'package:foodz_client/Widgets/smooth_star_rating.dart';
 
-class CartItem extends StatelessWidget {
+class ReserveItem extends StatelessWidget {
   final String name;
   final String img;
   final bool isFav;
   final double rating;
   final int raters;
 
-  CartItem(
+  ReserveItem(
       {Key key,
       @required this.name,
       @required this.img,
@@ -23,15 +23,15 @@ class CartItem extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
       child: InkWell(
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (BuildContext context) {
-                return DetailsScreen();
-              },
-            ),
-          );
-        },
+        // onTap: () {
+        //   Navigator.of(context).push(
+        //     MaterialPageRoute(
+        //       builder: (BuildContext context) {
+        //         return DetailsScreen();
+        //       },
+        //     ),
+        //   );
+        // },
         child: Row(
           children: <Widget>[
             Padding(
@@ -83,31 +83,51 @@ class CartItem extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Text(
-                      "20 Pieces",
+                      "State",
                       style: TextStyle(
-                        fontSize: 11.0,
+                        fontSize: 12,
                         fontWeight: FontWeight.w300,
                       ),
                     ),
-                    SizedBox(width: 10.0),
+                    SizedBox(width: 6.0),
                     Text(
-                      r"$90",
+                      "Accepted",
                       style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w900,
-                        color: Theme.of(context).accentColor,
+                        fontSize: 12,
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 10.0),
-                Text(
-                  "Quantity: 1",
-                  style: TextStyle(
-                    fontSize: 11.0,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
+                // Row(
+                //   children: <Widget>[
+                //     Text(
+                //       "20 Pieces",
+                //       style: TextStyle(
+                //         fontSize: 11.0,
+                //         fontWeight: FontWeight.w300,
+                //       ),
+                //     ),
+                //     SizedBox(width: 10.0),
+                //     Text(
+                //       r"$90",
+                //       style: TextStyle(
+                //         fontSize: 14.0,
+                //         fontWeight: FontWeight.w900,
+                //         color: Theme.of(context).accentColor,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // SizedBox(height: 10.0),
+                // Text(
+                //   "Quantity: 1",
+                //   style: TextStyle(
+                //     fontSize: 11.0,
+                //     fontWeight: FontWeight.w300,
+                //   ),
+                // ),
               ],
             ),
           ],

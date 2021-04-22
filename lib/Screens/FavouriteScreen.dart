@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodz_client/utils/Template/Restaurants.dart';
 import 'package:foodz_client/utils/Template/foods.dart';
 import 'package:foodz_client/Widgets/grid_product.dart';
 
@@ -15,18 +16,15 @@ class _FavouriteScreenState extends State<FavouriteScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      appBar: AppBar(
+        title: Text("My Reservations"),
+        backgroundColor: Theme.of(context).primaryColor,
+        automaticallyImplyLeading: false,
+      ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
         child: ListView(
           children: <Widget>[
-            SizedBox(height: 10.0),
-            Text(
-              "My Favorite Items",
-              style: TextStyle(
-                fontSize: 23,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
             SizedBox(height: 10.0),
             GridView.builder(
               shrinkWrap: true,
@@ -37,16 +35,16 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                 childAspectRatio: MediaQuery.of(context).size.width /
                     (MediaQuery.of(context).size.height / 1.25),
               ),
-              itemCount: foods == null ? 0 : foods.length,
+              itemCount: restos == null ? 0 : restos.length,
               itemBuilder: (BuildContext context, int index) {
 //                Food food = Food.fromJson(foods[index]);
-                Map food = foods[index];
+                Map res = restos[index];
 //                print(foods);
 //                print(foods.length);
                 return GridProduct(
-                  img: food['img'],
+                  img: res['img'],
                   isFav: true,
-                  name: food['name'],
+                  name: res['name'],
                   rating: 5.0,
                   raters: 23,
                 );

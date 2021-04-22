@@ -100,7 +100,7 @@ class _SearchScreenState extends State<SearchScreen>
                 trailing: Text(r"$10"),
                 subtitle: Row(
                   children: <Widget>[
-                    SmoothStarRating(
+                    StarRating(
                       starCount: 1,
                       color: Constants.ratingBG,
                       allowHalfRating: true,

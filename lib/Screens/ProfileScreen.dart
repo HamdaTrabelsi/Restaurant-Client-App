@@ -22,6 +22,23 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  void getCurrentUser() {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    getCurrentUser();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,7 +138,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               subtitle: Text(
-                "Jane Mary Doe",
+                //"Jane Mary Doe",
+                loggedInUser.displayName,
               ),
               trailing: IconButton(
                 icon: Icon(
@@ -141,7 +159,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               subtitle: Text(
-                "jane@doefamily.com",
+                //"jane@doefamily.com",
+                loggedInUser.email,
               ),
             ),
             ListTile(
@@ -153,7 +172,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               subtitle: Text(
-                "+1 816-926-6241",
+                loggedInUser.phoneNumber != null
+                    ? loggedInUser.phoneNumber
+                    : "No phone Number yet",
               ),
             ),
             ListTile(
@@ -165,7 +186,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               subtitle: Text(
-                "1278 Loving Acres RoadKansas City, MO 64110",
+                "No address yet",
               ),
             ),
             ListTile(
@@ -177,7 +198,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               subtitle: Text(
-                "Female",
+                "Add Gender",
               ),
             ),
             ListTile(
@@ -189,7 +210,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               subtitle: Text(
-                "April 9, 1995",
+                "No Birth Date",
               ),
             ),
             MediaQuery.of(context).platformBrightness == Brightness.dark

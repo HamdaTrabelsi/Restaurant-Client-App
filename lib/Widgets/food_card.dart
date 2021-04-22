@@ -3,14 +3,14 @@ import 'package:foodz_client/Screens/DetailsScreen.dart';
 import 'package:foodz_client/utils/Template/const.dart';
 import 'package:foodz_client/Widgets/smooth_star_rating.dart';
 
-class CartItem extends StatelessWidget {
+class FoodCard extends StatelessWidget {
   final String name;
   final String img;
   final bool isFav;
   final double rating;
   final int raters;
 
-  CartItem(
+  FoodCard(
       {Key key,
       @required this.name,
       @required this.img,

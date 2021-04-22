@@ -75,7 +75,7 @@ class SliderItem extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 5.0, top: 2.0),
             child: Row(
               children: <Widget>[
-                SmoothStarRating(
+                StarRating(
                   starCount: 5,
                   color: Constants.ratingBG,
                   allowHalfRating: true,

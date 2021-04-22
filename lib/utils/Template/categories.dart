@@ -1,29 +1,43 @@
+import 'dart:ui';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 List categories = [
+  {"name": "Coffee", "icon": FontAwesomeIcons.coffee, "items": 5},
+  {"name": "Restaurant", "icon": FontAwesomeIcons.pizzaSlice, "items": 20},
+  {"name": "Tea House", "icon": FontAwesomeIcons.leaf, "items": 9},
+  {"name": "Bar", "icon": FontAwesomeIcons.wineBottle, "items": 5},
+];
+
+List categs = [
   {
-    "name": "Drinks",
-    "icon": FontAwesomeIcons.wineBottle,
-    "items": 5
+    "name": "Italian",
+    "color1": Color.fromARGB(100, 0, 0, 0),
+    "color2": Color.fromARGB(100, 0, 0, 0),
+    "img": "images/template/food1.jpeg"
   },
   {
-    "name": "Miscellaneous",
-    "icon": FontAwesomeIcons.cannabis,
-    "items": 20
+    "name": "Chinese",
+    "color1": Color.fromARGB(100, 0, 0, 0),
+    "color2": Color.fromARGB(100, 0, 0, 0),
+    "img": "images/template/food2.jpeg"
   },
   {
-    "name": "Desert",
-    "icon": FontAwesomeIcons.birthdayCake,
-    "items": 9
+    "name": "Tunisian",
+    "color1": Color.fromARGB(100, 0, 0, 0),
+    "color2": Color.fromARGB(100, 0, 0, 0),
+    "img": "images/template/food3.jpeg"
   },
   {
-    "name": "Fast Food",
-    "icon": FontAwesomeIcons.pizzaSlice,
-    "items": 5
+    "name": "Spanish",
+    "color1": Color.fromARGB(100, 0, 0, 0),
+    "color2": Color.fromARGB(100, 0, 0, 0),
+    "img": "images/template/food4.jpeg"
   },
   {
-    "name": "Meals",
-    "icon": FontAwesomeIcons.breadSlice,
-    "items": 15
+    "name": "Mexican",
+    "color1": Color.fromARGB(100, 0, 0, 0),
+    "color2": Color.fromARGB(100, 0, 0, 0),
+    "img": "images/template/food5.jpeg"
   },
 ];

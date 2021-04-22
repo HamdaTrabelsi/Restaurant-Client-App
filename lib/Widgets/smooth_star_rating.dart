@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 typedef void RatingChangeCallback(double rating);
 
-class SmoothStarRating extends StatelessWidget {
+class StarRating extends StatelessWidget {
   final int starCount;
   final double rating;
   final RatingChangeCallback onRatingChanged;
@@ -12,15 +12,15 @@ class SmoothStarRating extends StatelessWidget {
   final bool allowHalfRating;
   final double spacing;
 
-  SmoothStarRating(
+  StarRating(
       {this.starCount = 5,
-        this.rating = 0.0,
-        this.onRatingChanged,
-        this.color,
-        this.borderColor,
-        this.size,
-        this.spacing = 0.0,
-        this.allowHalfRating = true}) {
+      this.rating = 0.0,
+      this.onRatingChanged,
+      this.color,
+      this.borderColor,
+      this.size,
+      this.spacing = 0.0,
+      this.allowHalfRating = true}) {
     assert(this.rating != null);
   }
 
