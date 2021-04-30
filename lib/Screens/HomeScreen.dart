@@ -5,6 +5,7 @@ import 'package:foodz_client/Widgets/grid_product.dart';
 import 'package:foodz_client/Widgets/grid_category.dart';
 import 'package:foodz_client/Widgets/Category_Item.dart';
 import 'package:foodz_client/Widgets/home_category.dart';
+import 'package:foodz_client/Widgets/offers_card.dart';
 import 'package:foodz_client/Widgets/slider_item.dart';
 import 'package:foodz_client/utils/Template/Restaurants.dart';
 import 'package:foodz_client/utils/Template/foods.dart';
@@ -33,12 +34,50 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    final screen_size_width = MediaQuery.of(context).size.width;
+    final screen_size_height = MediaQuery.of(context).size.height;
     super.build(context);
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       body: Padding(
         padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
         child: ListView(
           children: <Widget>[
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Recent Offers",
+              style: TextStyle(
+                fontSize: 23,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+                height: screen_size_height * .2,
+                width: screen_size_width,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    ImageCard(
+                      cardImg: "images/template/food1.jpeg",
+                      btnText: "GET UP TO 50% OFF",
+                      onpress: () {},
+                    ),
+                    SizedBox(width: 10),
+                    ImageCard(
+                      cardImg: "images/template/food2.jpeg",
+                      btnText: "GET UP TO 50% OFF",
+                      onpress: () {},
+                    ),
+                  ],
+                )),
+            SizedBox(
+              height: 20,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -146,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen>
             ),
             SizedBox(height: 20.0),
             Text(
-              "Food Categories",
+              "Cuisines",
               style: TextStyle(
                 fontSize: 23,
                 fontWeight: FontWeight.w800,
@@ -179,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Cuisines",
+                  "Worth Checking",
                   style: TextStyle(
                     fontSize: 23,
                     fontWeight: FontWeight.w800,
@@ -228,8 +267,8 @@ class _HomeScreenState extends State<HomeScreen>
                   img: cui['img'],
                   isFav: false,
                   name: cui['name'],
-                  //rating: 5.0,
-                  //raters: 23,
+                  rating: 5.0,
+                  raters: 23,
                 );
               },
             ),

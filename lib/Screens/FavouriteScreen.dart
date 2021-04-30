@@ -17,7 +17,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Reservations"),
+        title: Text("My Favourites"),
         backgroundColor: Theme.of(context).primaryColor,
         automaticallyImplyLeading: false,
       ),

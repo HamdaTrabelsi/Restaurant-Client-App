@@ -70,13 +70,14 @@ class _MenuScreen extends State<MenuScreen> {
                 children: <Widget>[
                   CategoryTitle(title: "All", active: true),
                   CategoryTitle(title: "Dessert"),
-                  CategoryTitle(title: "Asian"),
-                  CategoryTitle(title: "Chinese"),
-                  CategoryTitle(title: "Burgers"),
+                  CategoryTitle(title: "Main Course"),
+                  CategoryTitle(title: "Fast Food"),
+                  CategoryTitle(title: "Appetizer"),
+                  CategoryTitle(title: "Drinks"),
                 ],
               ),
             ),
-            SizedBox(height: 10.0),
+            SizedBox(height: 20.0),
             GridView.builder(
               shrinkWrap: true,
               primary: false,

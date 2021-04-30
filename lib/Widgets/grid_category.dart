@@ -3,22 +3,23 @@ import 'package:foodz_client/Screens/DetailsScreen.dart';
 //import 'package:restaurant_ui_kit/screens/details.dart';
 import 'package:foodz_client/utils/Template/const.dart';
 import 'package:foodz_client/Widgets/smooth_star_rating.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class GridCategory extends StatelessWidget {
   final String name;
   final String img;
   final bool isFav;
-  //final double rating;
-  //final int raters;
+  final double rating;
+  final int raters;
 
-  GridCategory({
-    Key key,
-    @required this.name,
-    @required this.img,
-    @required this.isFav,
-    //@required this.rating,
-    //@required this.raters
-  }) : super(key: key);
+  GridCategory(
+      {Key key,
+      @required this.name,
+      @required this.img,
+      @required this.isFav,
+      @required this.rating,
+      @required this.raters})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class GridCategory extends StatelessWidget {
           Stack(
             children: <Widget>[
               Container(
-                height: MediaQuery.of(context).size.height / 3.6,
+                height: MediaQuery.of(context).size.height / 3.8,
                 width: MediaQuery.of(context).size.width / 2.2,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
@@ -71,7 +72,7 @@ class GridCategory extends StatelessWidget {
               maxLines: 2,
             ),
           ),
-          /*Padding(
+          Padding(
             padding: EdgeInsets.only(bottom: 5.0, top: 2.0),
             child: Row(
               children: <Widget>[
@@ -90,7 +91,7 @@ class GridCategory extends StatelessWidget {
                 ),
               ],
             ),
-          ),*/
+          ),
         ],
       ),
       onTap: () {

@@ -108,7 +108,7 @@ class _ReviewsScreen extends State<ReviewsScreen> {
                               borderRadius: BorderRadius.circular(8),
                               boxShadow: <BoxShadow>[
                                 BoxShadow(
-                                    color: Cols.blue.withOpacity(0.2),
+                                    color: Cols.black.withOpacity(0.2),
                                     blurRadius: 24,
                                     offset: Offset(0, 8))
                               ]).copyWith(),
@@ -123,46 +123,53 @@ class _ReviewsScreen extends State<ReviewsScreen> {
             ),
             SizedBox(height: 20.0),
             ListView.builder(
+              padding: EdgeInsets.symmetric(vertical: 10),
               shrinkWrap: true,
               primary: false,
               physics: NeverScrollableScrollPhysics(),
               itemCount: comments == null ? 0 : comments.length,
               itemBuilder: (BuildContext context, int index) {
                 Map comment = comments[index];
-                return ListTile(
-                  leading: CircleAvatar(
-                    radius: 25.0,
-                    backgroundImage: AssetImage(
-                      "${comment['img']}",
-                    ),
+                return Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
                   ),
-                  title: Text("${comment['name']}"),
-                  subtitle: Column(
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          StarRating(
-                            starCount: 5,
-                            color: Constants.ratingBG,
-                            allowHalfRating: true,
-                            rating: 5.0,
-                            size: 12.0,
-                          ),
-                          SizedBox(width: 6.0),
-                          Text(
-                            "February 14, 2020",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w300,
+                  elevation: 1,
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 25.0,
+                      backgroundImage: AssetImage(
+                        "${comment['img']}",
+                      ),
+                    ),
+                    title: Text("${comment['name']}"),
+                    subtitle: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            StarRating(
+                              starCount: 5,
+                              color: Constants.ratingBG,
+                              allowHalfRating: true,
+                              rating: 5.0,
+                              size: 12.0,
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 7.0),
-                      Text(
-                        "${comment["comment"]}",
-                      ),
-                    ],
+                            SizedBox(width: 6.0),
+                            Text(
+                              "February 14, 2020",
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 7.0),
+                        Text(
+                          "${comment["comment"]}",
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -331,7 +338,7 @@ class _ReviewsScreen extends State<ReviewsScreen> {
                     child: Container(
                       padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
                       decoration: BoxDecoration(
-                        color: Colors.green,
+                        color: Colors.red[400],
                         borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(32.0),
                             bottomRight: Radius.circular(32.0)),
