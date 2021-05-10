@@ -8,6 +8,7 @@ import 'package:foodz_client/Screens/NotificationScreen.dart';
 import 'package:foodz_client/Screens/ProfileScreen.dart';
 import 'package:foodz_client/Screens/SearchScreen.dart';
 import 'package:foodz_client/Screens/ReservationsScreen.dart';
+import 'package:foodz_client/Screens/NoAccountScreen.dart';
 import 'package:foodz_client/utils/Template/const.dart';
 import 'package:foodz_client/Widgets/badge.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -18,6 +19,7 @@ User loggedInUser;
 final googleSignIn = GoogleSignIn();
 final _auth = FirebaseAuth.instance;
 //final fbSignIn = Facebook
+User _user;
 
 class MainScreen extends StatefulWidget {
   static String tag = '/MainScreen';
@@ -43,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => Future.value(false),
+      onWillPop: () => Future.value(true),
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -77,11 +79,13 @@ class _MainScreenState extends State<MainScreen> {
           onPageChanged: onPageChanged,
           children: <Widget>[
             HomeScreen(),
-            FavouriteScreen(),
+            _auth.currentUser != null ? FavouriteScreen() : NoAccountScreen(),
             SearchScreen(),
             //CartScreen(),
-            ReservationsScreen(),
-            ProfileScreen(),
+            _auth.currentUser != null
+                ? ReservationsScreen()
+                : NoAccountScreen(),
+            _auth.currentUser != null ? ProfileScreen() : NoAccountScreen(),
           ],
         ),
         bottomNavigationBar: BottomAppBar(

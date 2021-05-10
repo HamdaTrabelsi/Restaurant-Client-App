@@ -17,15 +17,12 @@ class IntroScreen extends StatefulWidget {
 class IntroScreenState extends State<IntroScreen> {
   int currentIndexPage = 0;
   int pageLength;
-  var titles = [
-    "Sign in / Sign Up",
-    "Choose Your Favourite Chef",
-    "Make Delicious Dishes"
-  ];
+
+  var titles = ["Discover", "Leave a Rate", "Book a table"];
   var subTitles = [
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.This is simply text ",
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.This is simply text  ",
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.This is simply text"
+    "Find the best restaurants, Search and Filter to find the best results",
+    "Rate restaurants and leave reviews, Share your experiences with other users",
+    "Make reservations at your favourite restaurants and get a response immediately"
   ];
 
   @override
@@ -164,11 +161,12 @@ class WalkThrough extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(vertical: 30),
       width: MediaQuery.of(context).size.width,
       alignment: Alignment.topCenter,
-      child: CachedNetworkImage(
-        imageUrl: textContent,
-        width: 280,
+      child: Image.asset(
+        textContent,
+        width: 220,
         height: (MediaQuery.of(context).size.height) / 2.3,
       ),
     );

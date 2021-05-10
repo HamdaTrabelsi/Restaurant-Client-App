@@ -1,10 +1,13 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clippy_flutter/arc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:foodz_client/Database/Authentication.dart';
 import 'package:foodz_client/Screens/HomeScreen.dart';
+import 'package:foodz_client/Screens/LoginScreen.dart';
 import 'package:foodz_client/Screens/MainScreen.dart';
 import 'package:foodz_client/Screens/RegisterScreen.dart';
 import 'package:foodz_client/utils/FoodColors.dart';
@@ -17,7 +20,7 @@ import 'package:foodz_client/utils/DbExtension.dart';
 import 'package:foodz_client/utils/colors.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+//import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static String tag = 'WelcomeScreen';
@@ -31,6 +34,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
   //FacebookLogin _facebookLogin = FacebookLogin();
   final _auth = FirebaseAuth.instance;
   User _user;
+  Authentication authentication = Authentication();
 
   //final fbLogin = FacebookLogin();
 
@@ -71,11 +75,13 @@ class WelcomeScreenState extends State<WelcomeScreen> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          CachedNetworkImage(
-              imageUrl: food_ic_login,
-              height: width * 0.6,
-              fit: BoxFit.cover,
-              width: width),
+          Image.asset(food_ic_login,
+              height: width * 0.6, fit: BoxFit.cover, width: width),
+          // CachedNetworkImage(
+          //     imageUrl: food_ic_login,
+          //     height: width * 0.6,
+          //     fit: BoxFit.cover,
+          //     width: width),
           Container(
             margin: EdgeInsets.only(top: width * 0.5),
             child: Stack(
@@ -103,6 +109,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                         IconButton(
                             icon: Icon(Icons.arrow_forward),
                             onPressed: () {
+                              Navigator.pop(context);
                               Navigator.pushNamed(context, MainScreen.tag);
                             },
                             color: food_textColorPrimary),
@@ -126,39 +133,54 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                         food_color_red,
                         food_textColorPrimary,
                         fn: () async {
-                          final user = await googleSignIn.signIn();
-                          if (user == null) {
-                            return;
-                          } else {
-                            final googleAuth = await user.authentication;
+                          // await authentication.SignInWithGoogle(
+                          //     context: context);
 
-                            final credential = GoogleAuthProvider.credential(
-                              accessToken: googleAuth.accessToken,
-                              idToken: googleAuth.idToken,
-                            );
+                          await authentication.signInWithGoogle(
+                              context: context);
 
-                            await FirebaseAuth.instance
-                                .signInWithCredential(credential);
+                          //Navigator.pushNamed(context, MainScreen.tag);
 
-                            Navigator.pushNamed(context, MainScreen.tag);
-                          }
+                          // final user = await googleSignIn.signIn();
+                          // if (user == null) {
+                          //   return;
+                          // } else {
+                          //   final googleAuth = await user.authentication;
+                          //
+                          //   final credential = GoogleAuthProvider.credential(
+                          //     accessToken: googleAuth.accessToken,
+                          //     idToken: googleAuth.idToken,
+                          //   );
+                          //
+                          //   UserCredential cred = await FirebaseAuth.instance
+                          //       .signInWithCredential(credential);
+                          //
+                          //   if (cred.additionalUserInfo.isNewUser) {
+                          //     await authentication.storeUserData(
+                          //         id: cred.user.uid,
+                          //         name: cred.user.displayName,
+                          //         mail: cred.user.email);
+                          //   }
+                          //
+                          //   Navigator.pushNamed(context, MainScreen.tag);
+                          // }
                         },
                       ),
                       mOption(food_colorPrimary, food_ic_fb, food_lbl_facebook,
                           food_white, food_white, fn: () async {
-// Trigger the sign-in flow
-                        final AccessToken result =
-                            await FacebookAuth.instance.login();
-
-                        // Create a credential from the access token
-                        final FacebookAuthCredential facebookAuthCredential =
-                            FacebookAuthProvider.credential(result.token);
-
-                        // Once signed in, return the UserCredential
-                        await FirebaseAuth.instance
-                            .signInWithCredential(facebookAuthCredential);
-
-                        Navigator.pushNamed(context, MainScreen.tag);
+// // Trigger the sign-in flow
+//                         final AccessToken result =
+//                             await FacebookAuth.instance.login();
+//
+//                         // Create a credential from the access token
+//                         final FacebookAuthCredential facebookAuthCredential =
+//                             FacebookAuthProvider.credential(result.token);
+//
+//                         // Once signed in, return the UserCredential
+//                         await FirebaseAuth.instance
+//                             .signInWithCredential(facebookAuthCredential);
+//
+//                         Navigator.pushNamed(context, MainScreen.tag);
                       }),
                       SizedBox(height: width * 0.05),
                       Row(
@@ -184,10 +206,8 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                       GestureDetector(
                         onTap: () {
                           //launchScreen(context, RegisterScreen.tag);
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return RegisterScreen();
-                          }));
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, LoginScreen.tag);
                         },
                         child: Container(
                           decoration: boxDecoration(

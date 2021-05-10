@@ -11,7 +11,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:foodz_client/Screens/BookingWidget.dart';
 
 class RestInfoScreen extends StatefulWidget {
-  static String tag = '/DetailsScreen';
+  static String tag = '/DetailsRestInfoScreen';
 
   @override
   _RestInfoScreen createState() => _RestInfoScreen();

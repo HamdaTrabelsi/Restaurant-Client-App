@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodz_client/Database/Authentication.dart';
 import 'package:foodz_client/Screens/HomeScreen.dart';
 import 'package:foodz_client/Screens/LoginScreen.dart';
 import 'package:foodz_client/Screens/MainScreen.dart';
@@ -22,9 +23,11 @@ class RegisterScreenState extends State<RegisterScreen> {
   String email;
   String password;
   String repeatPassword;
+  String username;
 
   bool passwordVisible = false;
   bool isRemember = false;
+  Authentication authentication = Authentication();
 
   @override
   void initState() {
@@ -86,12 +89,21 @@ class RegisterScreenState extends State<RegisterScreen> {
                     height: 70,
                     width: 70,
                   )),
-              editTextStyle(t3_hint_Email, isPassword: false,
-                  onchange: (value) {
+              editTextStyle(t3_hint_Email,
+                  isPassword: false,
+                  type: TextInputType.emailAddress, onchange: (value) {
                 email = value;
                 //print(email);
               }),
               SizedBox(height: 16),
+
+              editTextStyle("Username", isPassword: false, onchange: (value) {
+                username = value;
+                //print(email);
+              }),
+
+              SizedBox(height: 16),
+
               editTextStyle(t3_hint_password, isPassword: true,
                   onchange: (value) {
                 password = value;
@@ -110,19 +122,15 @@ class RegisterScreenState extends State<RegisterScreen> {
                     textContent: t3_lbl_sign_up,
                     onPressed: () async {
                       //print(email + " " + password + " " + repeatPassword);
-                      if (email != null &&
+                      if (email.trim() != null &&
                           password != null &&
-                          password == repeatPassword) {
-                        try {
-                          final newUser =
-                              await _auth.createUserWithEmailAndPassword(
-                                  email: email, password: password);
-                          if (newUser != null) {
-                            Navigator.pushNamed(context, MainScreen.tag);
-                          }
-                        } catch (e) {
-                          print(e);
-                        }
+                          password == repeatPassword &&
+                          username.trim() != null) {
+                        await authentication.classicSignUp(
+                            context: context,
+                            email: email.trim(),
+                            password: password,
+                            username: username.trim());
                       }
                     }),
               ),
@@ -144,48 +152,46 @@ class RegisterScreenState extends State<RegisterScreen> {
                               color: t3_colorPrimary,
                             )),
                         onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return LoginScreen();
-                          }));
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, LoginScreen.tag);
                         }),
                   )
                 ],
               ),
-              Container(
-                alignment: Alignment.bottomLeft,
-                margin:
-                    EdgeInsets.only(top: 50, left: 16, right: 16, bottom: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Image.asset(
-                      t3_ic_sign2,
-                      height: 50,
-                      width: 70,
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(top: 25, left: 10),
-                        child: Image.asset(
-                          t3_ic_sign4,
-                          height: 50,
-                          width: 70,
-                        )),
-                    Container(
-                        margin: EdgeInsets.only(top: 25, left: 10),
-                        child: Image.asset(
-                          t3_ic_sign3,
-                          height: 50,
-                          width: 70,
-                        )),
-                    Image.asset(
-                      t3_ic_sign1,
-                      height: 80,
-                      width: 80,
-                    ),
-                  ],
-                ),
-              )
+              // Container(
+              //   alignment: Alignment.bottomLeft,
+              //   margin:
+              //       EdgeInsets.only(top: 50, left: 16, right: 16, bottom: 20),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: <Widget>[
+              //       Image.asset(
+              //         t3_ic_sign2,
+              //         height: 50,
+              //         width: 70,
+              //       ),
+              //       Container(
+              //           margin: EdgeInsets.only(top: 25, left: 10),
+              //           child: Image.asset(
+              //             t3_ic_sign4,
+              //             height: 50,
+              //             width: 70,
+              //           )),
+              //       Container(
+              //           margin: EdgeInsets.only(top: 25, left: 10),
+              //           child: Image.asset(
+              //             t3_ic_sign3,
+              //             height: 50,
+              //             width: 70,
+              //           )),
+              //       Image.asset(
+              //         t3_ic_sign1,
+              //         height: 80,
+              //         width: 80,
+              //       ),
+              //     ],
+              //   ),
+              // )
             ],
           ),
         ),

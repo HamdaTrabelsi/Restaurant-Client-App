@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:foodz_client/Database/Authentication.dart';
 import 'package:foodz_client/Screens/HomeScreen.dart';
 import 'package:foodz_client/Screens/MainScreen.dart';
 import 'package:foodz_client/Screens/RegisterScreen.dart';
@@ -25,6 +26,8 @@ class LoginScreenState extends State<LoginScreen> {
   final _auth = FirebaseAuth.instance;
   String email;
   String password;
+
+  Authentication authentication = Authentication();
 
   @override
   void initState() {
@@ -87,8 +90,9 @@ class LoginScreenState extends State<LoginScreen> {
                     height: 70,
                     width: 70,
                   )),
-              editTextStyle(t3_hint_Email, isPassword: false,
-                  onchange: (value) {
+              editTextStyle(t3_hint_Email,
+                  isPassword: false,
+                  type: TextInputType.emailAddress, onchange: (value) {
                 email = value;
               }),
               SizedBox(height: 16),
@@ -121,21 +125,27 @@ class LoginScreenState extends State<LoginScreen> {
                 child: AppButton(
                     textContent: t3_lbl_sign_in,
                     onPressed: () async {
-                      try {
-                        final user = await _auth.signInWithEmailAndPassword(
-                            email: email, password: password);
-                        if (user != null) {
-                          Navigator.pushNamed(context, MainScreen.tag);
-                        }
-                      } catch (e) {
-                        print(e);
+                      if (email.trim() != null && password != null) {
+                        await authentication.classicSignIn(
+                            context: context,
+                            email: email.trim(),
+                            password: password);
                       }
+                      // try {
+                      //   final user = await _auth.signInWithEmailAndPassword(
+                      //       email: email, password: password);
+                      //   if (user != null) {
+                      //     Navigator.pushNamed(context, MainScreen.tag);
+                      //   }
+                      // } catch (e) {
+                      //   print(e);
+                      // }
                     }),
               ),
               SizedBox(
                 height: 20,
               ),
-              text(t3_lbl_forgot_password),
+              //text(t3_lbl_forgot_password),
               SizedBox(
                 height: 16,
               ),
@@ -154,10 +164,8 @@ class LoginScreenState extends State<LoginScreen> {
                               color: t3_colorPrimary,
                             )),
                         onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return RegisterScreen();
-                          }));
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, RegisterScreen.tag);
                         }),
                   )
                 ],

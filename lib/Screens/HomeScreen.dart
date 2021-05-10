@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen>
     final screen_size_height = MediaQuery.of(context).size.height;
     super.build(context);
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: /*Colors.grey[100]*/ Theme.of(context).primaryColor,
       body: Padding(
         padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
         child: ListView(

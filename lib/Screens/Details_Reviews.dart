@@ -13,7 +13,7 @@ import 'package:foodz_client/utils/Template/tap_opacity.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class ReviewsScreen extends StatefulWidget {
-  static String tag = '/DetailsScreen';
+  static String tag = '/DetailsReviewsScreen';
 
   @override
   _ReviewsScreen createState() => _ReviewsScreen();

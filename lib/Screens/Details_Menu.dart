@@ -14,7 +14,7 @@ import 'package:foodz_client/Widgets/badge.dart';
 import 'package:foodz_client/Widgets/smooth_star_rating.dart';
 
 class MenuScreen extends StatefulWidget {
-  static String tag = '/DetailsScreen';
+  static String tag = '/DetailsMenuScreen';
 
   @override
   _MenuScreen createState() => _MenuScreen();
