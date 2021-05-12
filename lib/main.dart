@@ -15,15 +15,21 @@ import 'package:foodz_client/Screens/ProfileScreen.dart';
 import 'package:foodz_client/Screens/RegisterScreen.dart';
 import 'package:foodz_client/Screens/WriteReviewScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodz_client/Screens/SearchScreen.dart';
 import 'package:foodz_client/provider/app_provider.dart';
 import 'package:foodz_client/utils/Template/const.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Screens/Welcome.dart';
 
+int wlkScreen;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  wlkScreen = prefs.getInt("showWalk");
   await Firebase.initializeApp();
   runApp(
     MultiProvider(
@@ -48,7 +54,11 @@ class MyApp extends StatelessWidget {
         title: Constants.appName,
         theme: appProvider.theme,
         darkTheme: Constants.darkTheme,
-        initialRoute: IntroScreen.tag,
+        initialRoute: wlkScreen == 0
+            ? FirebaseAuth.instance.currentUser == null
+                ? WelcomeScreen.tag
+                : MainScreen.tag
+            : IntroScreen.tag,
         routes: {
           IntroScreen.tag: (context) => IntroScreen(),
           WelcomeScreen.tag: (context) => WelcomeScreen(),

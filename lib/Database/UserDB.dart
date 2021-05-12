@@ -9,6 +9,7 @@ import 'package:foodz_client/Models/Utilisateur.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserDB {
   final CollectionReference userCollection =
@@ -224,4 +225,9 @@ class UserDB {
     }
   }
 // Stream<QuerySnapshot> retrieveUsers() {}
+
+  Future<void> changeFirstTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('showWalk', 0);
+  }
 }

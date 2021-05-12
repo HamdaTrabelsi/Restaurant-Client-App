@@ -115,7 +115,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                         image: _image == null
                                             ? snapshot.data["image"] == ""
                                                 ? AssetImage(
-                                                    "images/offline/empty.png")
+                                                    "images/restaurant/empty.png")
                                                 : NetworkImage(
                                                     snapshot.data["image"])
                                             : FileImage(File(_image.path)),

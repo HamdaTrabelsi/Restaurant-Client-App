@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:foodz_client/Database/UserDB.dart';
 import 'package:foodz_client/Screens/Welcome.dart';
 import 'package:foodz_client/utils/dots_indicator/dots_indicator.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:foodz_client/utils/T3Constant.dart';
 import 'package:foodz_client/utils/T3Images.dart';
 import 'package:foodz_client/utils/colors.dart';
+
+UserDB _userDB = UserDB();
 
 class IntroScreen extends StatefulWidget {
   static String tag = 'IntroScreen';
@@ -134,11 +137,10 @@ class IntroScreenState extends State<IntroScreen> {
                             ),
                           ),
                         ),
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return WelcomeScreen();
-                          }));
+                        onPressed: () async {
+                          await _userDB.changeFirstTime();
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, WelcomeScreen.tag);
                         },
                       ),
                     ),

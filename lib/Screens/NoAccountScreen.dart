@@ -63,7 +63,10 @@ class _NoAccountScreen extends State<NoAccountScreen> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, WelcomeScreen.tag);
+                      },
                       child:
                           Text("Login", style: TextStyle(color: Colors.white)),
                     ),
