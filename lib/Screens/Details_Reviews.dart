@@ -5,6 +5,8 @@ import 'package:foodz_client/Database/ReviewDB.dart';
 import 'package:foodz_client/Models/Review.dart';
 import 'package:foodz_client/Models/Utilisateur.dart';
 import 'package:foodz_client/Screens/NotificationScreen.dart';
+import 'package:foodz_client/utils/ErrorFlushBar.dart';
+import 'package:foodz_client/utils/SuccessFlushBar.dart';
 import 'package:foodz_client/utils/Template/Restaurants.dart';
 //import 'package:restaurant_ui_kit/screens/notifications.dart';
 import 'package:foodz_client/utils/Template/comments.dart';
@@ -32,10 +34,11 @@ class ReviewsScreen extends StatefulWidget {
 
 class _ReviewsScreen extends State<ReviewsScreen> {
   TextEditingController _descController = new TextEditingController();
-  double _stars;
+  double _stars = 0;
   double _initstars = 0;
   List<Review> _reviews = [];
   bool isFav = false;
+  bool _canAdd = true;
 
   void getCurrentUser() {
     try {
@@ -64,7 +67,7 @@ class _ReviewsScreen extends State<ReviewsScreen> {
             SizedBox(height: 10.0),
             SizedBox(height: 10.0),
             Text(
-              "${restos[1]['name']}",
+              "MyRest",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -172,16 +175,35 @@ class _ReviewsScreen extends State<ReviewsScreen> {
                               reviewButton(
                                   ontap: () {
                                     openAlertBox(
-                                        ontap: () {
-                                          revDB
-                                              .addNewReview(
-                                                  restoId: widget.restoId,
-                                                  description:
-                                                      _descController.text,
-                                                  stars: _stars)
-                                              .whenComplete(
-                                                  () => Navigator.pop(context));
-                                        },
+                                        ontap: !_canAdd
+                                            ? null
+                                            : () {
+                                                if (_stars == 0) {
+                                                  ErrorFlush.showErrorFlush(
+                                                      context: context,
+                                                      message:
+                                                          "Provide a valid rating");
+                                                } else {
+                                                  setState(() {
+                                                    _canAdd = false;
+                                                  });
+                                                  revDB
+                                                      .addNewReview(
+                                                          restoId:
+                                                              widget.restoId,
+                                                          description:
+                                                              _descController
+                                                                  .text,
+                                                          stars: _stars)
+                                                      .whenComplete(() =>
+                                                          SuccessFlush
+                                                              .showSuccessFlush(
+                                                                  context:
+                                                                      context,
+                                                                  message:
+                                                                      "Review Submitted"));
+                                                }
+                                              },
                                         text: "Rate Product");
                                   },
                                   text: "Add"),

@@ -384,7 +384,10 @@ class _RestInfoScreen extends State<RestInfoScreen> {
           ),
           body: TabBarView(
             children: [
-              BookingWidget(scrollController: scrollController),
+              BookingWidget(
+                scrollController: scrollController,
+                restId: widget.restoId,
+              ),
             ],
           ),
         ),

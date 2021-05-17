@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:foodz_client/Widgets/RoundIconButton.dart';
+import 'package:foodz_client/Database/ReservationDB.dart';
+import 'package:foodz_client/utils/ErrorFlushBar.dart';
+import 'package:foodz_client/utils/SuccessFlushBar.dart';
 import 'package:foodz_client/utils/Template/common.dart';
 import 'package:date_format/date_format.dart';
 import 'package:foodz_client/utils/colors.dart';
@@ -9,17 +12,18 @@ class BookingWidget extends StatefulWidget {
   const BookingWidget({
     Key key,
     @required this.scrollController,
+    @required this.restId,
   }) : super(key: key);
   final ScrollController scrollController;
-
+  final String restId;
   @override
   _BookingWidgetState createState() => _BookingWidgetState();
 }
 
 class _BookingWidgetState extends State<BookingWidget> {
-  String _setTime, _setDate;
+  //String _setTime, _setDate;
 
-  String _hour, _minute, _time;
+  String _hour = "", _minute = "", _time;
 
   String dateTime;
 
@@ -27,8 +31,11 @@ class _BookingWidgetState extends State<BookingWidget> {
 
   TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
 
-  TextEditingController _dateController = TextEditingController();
-  TextEditingController _timeController = TextEditingController();
+  int _people = 0;
+
+  ReservationDB resDB = new ReservationDB();
+  // TextEditingController _dateController = TextEditingController();
+  // TextEditingController _timeController = TextEditingController();
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -40,7 +47,7 @@ class _BookingWidgetState extends State<BookingWidget> {
     if (picked != null)
       setState(() {
         selectedDate = picked;
-        _dateController.text = DateFormat.yMd().format(selectedDate);
+        //_dateController.text = DateFormat.yMd().format(selectedDate);
       });
   }
 
@@ -55,20 +62,20 @@ class _BookingWidgetState extends State<BookingWidget> {
         _hour = selectedTime.hour.toString();
         _minute = selectedTime.minute.toString();
         _time = _hour + ' : ' + _minute;
-        _timeController.text = _time;
-        _timeController.text = formatDate(
-            DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
-            [hh, ':', nn, " ", am]).toString();
+        // _timeController.text = _time;
+        // _timeController.text = formatDate(
+        //     DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
+        //     [hh, ':', nn, " ", am]).toString();
       });
   }
 
   @override
   void initState() {
-    _dateController.text = DateFormat.yMd().format(DateTime.now());
+    //_dateController.text = DateFormat.yMd().format(DateTime.now());
 
-    _timeController.text = formatDate(
-        DateTime(2019, 08, 1, DateTime.now().hour, DateTime.now().minute),
-        [hh, ':', nn, " ", am]).toString();
+    // _timeController.text = formatDate(
+    //     DateTime(2019, 08, 1, DateTime.now().hour, DateTime.now().minute),
+    //     [hh, ':', nn, " ", am]).toString();
     super.initState();
   }
 
@@ -114,7 +121,7 @@ class _BookingWidgetState extends State<BookingWidget> {
                       height: 5,
                     ),
                     Text(
-                      '2 People',
+                      '$_people People',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                     )
@@ -124,12 +131,22 @@ class _BookingWidgetState extends State<BookingWidget> {
               Row(
                 children: [
                   RoundIconButton(
+                    onPressed: () {
+                      setState(() {
+                        if (_people > 0) {
+                          _people--;
+                        }
+                      });
+                    },
                     icon: Icons.remove,
                   ),
                   SizedBox(
                     width: 10,
                   ),
                   RoundIconButton(
+                    onPressed: () {
+                      _people++;
+                    },
                     icon: Icons.add,
                   )
                 ],
@@ -195,10 +212,11 @@ class _BookingWidgetState extends State<BookingWidget> {
                       height: 5,
                     ),
                     Text(
-                      formatDate(
-                          DateTime(2019, 08, 1, selectedTime.hour,
-                              selectedTime.minute),
-                          [hh, ':', nn, " ", am]).toString(),
+                      "$_hour : $_minute",
+                      // formatDate(
+                      //     DateTime(2019, 08, 1, selectedTime.hour,
+                      //         selectedTime.minute),
+                      //     [hh, ':', nn, " ", am]).toString(),
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                     )
@@ -314,7 +332,33 @@ class _BookingWidgetState extends State<BookingWidget> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            onPressed: () => print('Book'),
+            onPressed: () {
+              if (_people == 0) {
+                ErrorFlush.showErrorFlush(
+                    context: context,
+                    message: "Number of people should be higher than 0");
+              } else if (_hour == null || _hour == "00" || _minute.isEmpty) {
+                ErrorFlush.showErrorFlush(
+                    context: context, message: "Enter a valid time");
+              } else if (selectedDate
+                  .difference(DateTime.now())
+                  .inDays
+                  .isNegative) {
+                ErrorFlush.showErrorFlush(
+                    context: context, message: "Enter a valid Date");
+              } else {
+                resDB
+                    .addNewReservation(
+                        restoId: widget.restId,
+                        reservationTime: "$_hour : $_minute",
+                        reservationDay: selectedDate,
+                        people: _people.toString())
+                    .onError((error, stackTrace) => ErrorFlush.showErrorFlush(
+                        context: context, message: error.toString()))
+                    .whenComplete(() => SuccessFlush.showSuccessFlush(
+                        context: context, message: "Reservation Sent !"));
+              }
+            },
           ),
           SizedBox(height: 30.0),
           SizedBox(height: 20.0),

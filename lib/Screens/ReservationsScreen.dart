@@ -27,29 +27,29 @@ class _ReservationsScreen extends State<ReservationsScreen>
       ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
-        child: ListView.separated(
-          separatorBuilder: (context, index) => Divider(),
-          itemCount: restos == null ? 0 : restos.length,
-          itemBuilder: (BuildContext context, int index) {
-//                Food food = Food.fromJson(foods[index]);
-            Map rest = restos[index];
-//                print(foods);
-//                print(foods.length);
-            return DismissibleWidget(
-              item: rest,
-              ondismissed: (direction) {
-                dismissItem(context, index, direction);
-              },
-              child: ReserveItem(
-                img: rest['img'],
-                isFav: false,
-                name: rest['name'],
-                rating: 5.0,
-                raters: 23,
-              ),
-            );
-          },
-        ),
+//         child: ListView.separated(
+//           separatorBuilder: (context, index) => Divider(),
+//           itemCount: restos == null ? 0 : restos.length,
+//           itemBuilder: (BuildContext context, int index) {
+// //                Food food = Food.fromJson(foods[index]);
+//             Map rest = restos[index];
+// //                print(foods);
+// //                print(foods.length);
+//             return DismissibleWidget(
+//               item: rest,
+//               ondismissed: (direction) {
+//                 dismissItem(context, index, direction);
+//               },
+//               child: ReserveItem(
+//                 img: rest['img'],
+//                 isFav: false,
+//                 name: rest['name'],
+//                 rating: 5.0,
+//                 raters: 23,
+//               ),
+//             );
+//           },
+//         ),
       ),
       // floatingActionButton: FloatingActionButton(
       //   tooltip: "Checkout",
@@ -74,11 +74,11 @@ class _ReservationsScreen extends State<ReservationsScreen>
   @override
   bool get wantKeepAlive => true;
 
-  void dismissItem(
-      BuildContext context, int index, DismissDirection direction) {
-    setState(() {
-      restos.removeAt(index);
-    });
-    Util.showSnackBar(context, 'This reservation has been cancelled');
-  }
+  // void dismissItem(
+  //     BuildContext context, int index, DismissDirection direction) {
+  //   setState(() {
+  //     restos.removeAt(index);
+  //   });
+  //   Util.showSnackBar(context, 'This reservation has been cancelled');
+  // }
 }

@@ -25,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin<HomeScreen> {
   List<Restaurant> featuredRest = [];
+  List<Restaurant> worthCheck = [];
 
   // List<T> map<T>(List list, Function handler) {
   //   List<T> result = [];
@@ -159,49 +160,6 @@ class _HomeScreenState extends State<HomeScreen>
                         );
                       }).toList(),
                     );
-//                     return CarouselSlider(
-//                       items: map<Widget>(
-//                         restos,
-//                         (index, i) {
-//                           Map res = restos[index];
-//                           return SliderItem(
-//                               img: res['img'],
-//                               isFav: false,
-//                               name: res['name'],
-//                               rating: 5.0,
-//                               raters: 23,
-//                               ontap: () {
-//                                 Navigator.pushNamed(context, DetailsScreen.tag);
-//                               });
-//                         },
-//                       ).toList(),
-//                       /*map<Widget>(
-//                   foods,
-//                   (index, i) {
-//                     Map food = foods[index];
-//                     return SliderItem(
-//                       img: food['img'],
-//                       isFav: false,
-//                       name: food['name'],
-//                       rating: 5.0,
-//                       raters: 23,
-//                     );
-//                   },
-//                 ).toList(),*/
-//                       options: CarouselOptions(
-//                         height: MediaQuery.of(context).size.height / 2.4,
-//
-//                         autoPlay: true,
-// //                enlargeCenterPage: true,
-//                         viewportFraction: 1.0,
-// //              aspectRatio: 2.0,
-//                         onPageChanged: (index, reason) {
-//                           setState(() {
-//                             _current = index;
-//                           });
-//                         },
-//                       ),
-//                     );
                   }
                 }),
             //SizedBox(height: 20.0),
@@ -287,41 +245,45 @@ class _HomeScreenState extends State<HomeScreen>
               ],
             ),
             SizedBox(height: 10.0),
-
-            GridView.builder(
-              shrinkWrap: true,
-              primary: false,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                //childAspectRatio: MediaQuery.of(context).size.width /
-                //    (MediaQuery.of(context).size.height / 1.25),
-                childAspectRatio: MediaQuery.of(context).size.width /
-                    (MediaQuery.of(context).size.height / 1.4),
-              ),
-              itemCount: restos == null ? 0 : restos.length,
-              itemBuilder: (BuildContext context, int index) {
+            FutureBuilder(
+                future:
+                    FirebaseFirestore.instance.collection('restaurant').get(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                        child: Container(child: CircularProgressIndicator()));
+                  } else {
+                    worthCheck.clear();
+                    snapshot.data.docs.forEach((element) {
+                      worthCheck.add(Restaurant.fromJson(element));
+                    });
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      primary: false,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        //childAspectRatio: MediaQuery.of(context).size.width /
+                        //    (MediaQuery.of(context).size.height / 1.25),
+                        childAspectRatio: MediaQuery.of(context).size.width /
+                            (MediaQuery.of(context).size.height / 1.4),
+                      ),
+                      itemCount: worthCheck == null ? 0 : worthCheck.length,
+                      itemBuilder: (BuildContext context, int index) {
 //                Food food = Food.fromJson(foods[index]);
-                Map cui = restos[index];
-//                print(foods);
-//                print(foods.length);
-                /*return GridProduct(
-                  img: food['img'],
-                  isFav: false,
-                  name: food['name'],
-                  rating: 5.0,
-                  raters: 23,
-                );*/
-                return GridCategory(
-                  img: cui['img'],
-                  isFav: false,
-                  name: cui['name'],
-                  rating: 5.0,
-                  raters: 23,
-                );
-              },
-            ),
+                        Restaurant res = worthCheck[index];
 
+                        return GridCategory(
+                          img: res.image,
+                          isFav: false,
+                          name: res.title,
+                          rating: 5.0,
+                          raters: 23,
+                        );
+                      },
+                    );
+                  }
+                }),
             SizedBox(height: 30),
           ],
         ),
