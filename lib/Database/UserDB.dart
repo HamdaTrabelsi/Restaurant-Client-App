@@ -33,7 +33,7 @@ class UserDB {
         username: name,
         email: mail,
         image: "",
-        created: DateTime.now(),
+        created: Timestamp.now(),
         birthDate: null,
         phone: "",
         gender: "",

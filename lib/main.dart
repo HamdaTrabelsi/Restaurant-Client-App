@@ -9,6 +9,7 @@ import 'package:foodz_client/Screens/HomeScreen.dart';
 import 'package:foodz_client/Screens/IntroScreen.dart';
 import 'package:foodz_client/Screens/LoginScreen.dart';
 import 'package:foodz_client/Screens/MainScreen.dart';
+import 'package:foodz_client/Screens/PlateDetailsScreen.dart';
 import 'package:foodz_client/Screens/ReservationsScreen.dart';
 import 'package:foodz_client/Screens/NotificationScreen.dart';
 import 'package:foodz_client/Screens/ProfileScreen.dart';
@@ -77,6 +78,7 @@ class MyApp extends StatelessWidget {
           SearchScreen.tag: (context) => SearchScreen(),
           WriteReview.tag: (context) => WriteReview(),
           ReservationsScreen.tag: (context) => ReservationsScreen(),
+          PlateDetailsScreen.tag: (context) => PlateDetailsScreen(),
         },
       );
     });

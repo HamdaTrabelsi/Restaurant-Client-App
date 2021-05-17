@@ -22,6 +22,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   bool isFav = false;
   @override
   Widget build(BuildContext context) {
+    final restoID = ModalRoute.of(context).settings.arguments;
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -76,9 +77,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
         ),
         body: TabBarView(
           children: [
-            RestInfoScreen(),
-            MenuScreen(),
-            ReviewsScreen(),
+            RestInfoScreen(
+              restoId: restoID,
+            ),
+            MenuScreen(
+              restoId: restoID,
+            ),
+            ReviewsScreen(restoId: restoID,),
           ],
         ),
       ),

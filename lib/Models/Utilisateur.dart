@@ -1,15 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Utilisateur {
   String uid;
   String email;
   String username;
-  DateTime birthDate;
+  Timestamp birthDate;
   String image;
   String phone;
   String gender;
   String address;
-  DateTime created;
+  Timestamp created;
 
   Utilisateur(
       {@required this.uid,

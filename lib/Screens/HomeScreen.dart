@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:foodz_client/Models/Restaurant.dart';
+import 'package:foodz_client/Screens/DetailsScreen.dart';
 import 'package:foodz_client/Screens/DishesScreen.dart';
 //import 'package:restaurant_ui_kit/screens/dishes.dart';
 import 'package:foodz_client/Widgets/grid_product.dart';
@@ -21,14 +24,16 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin<HomeScreen> {
-  List<T> map<T>(List list, Function handler) {
-    List<T> result = [];
-    for (var i = 0; i < list.length; i++) {
-      result.add(handler(i, list[i]));
-    }
+  List<Restaurant> featuredRest = [];
 
-    return result;
-  }
+  // List<T> map<T>(List list, Function handler) {
+  //   List<T> result = [];
+  //   for (var i = 0; i < list.length; i++) {
+  //     result.add(handler(i, list[i]));
+  //   }
+  //
+  //   return result;
+  // }
 
   int _current = 0;
 
@@ -114,48 +119,92 @@ class _HomeScreenState extends State<HomeScreen>
 
             //Slider Here
 
-            CarouselSlider(
-              items: map<Widget>(
-                restos,
-                (index, i) {
-                  Map res = restos[index];
-                  return SliderItem(
-                    img: res['img'],
-                    isFav: false,
-                    name: res['name'],
-                    rating: 5.0,
-                    raters: 23,
-                  );
-                },
-              ).toList(),
-              /*map<Widget>(
-                foods,
-                (index, i) {
-                  Map food = foods[index];
-                  return SliderItem(
-                    img: food['img'],
-                    isFav: false,
-                    name: food['name'],
-                    rating: 5.0,
-                    raters: 23,
-                  );
-                },
-              ).toList(),*/
-              options: CarouselOptions(
-                height: MediaQuery.of(context).size.height / 2.4,
+            FutureBuilder(
+                future:
+                    FirebaseFirestore.instance.collection('restaurant').get(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                        child: Container(child: CircularProgressIndicator()));
+                  } else {
+                    featuredRest.clear();
+                    snapshot.data.docs.forEach((element) {
+                      featuredRest.add(Restaurant.fromJson(element));
+                    });
 
-                autoPlay: true,
-//                enlargeCenterPage: true,
-                viewportFraction: 1.0,
-//              aspectRatio: 2.0,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _current = index;
-                  });
-                },
-              ),
-            ),
-            SizedBox(height: 20.0),
+                    return CarouselSlider(
+                      options: CarouselOptions(
+                        //height: MediaQuery.of(context).size.height / 2.4,
+                        height: MediaQuery.of(context).size.height / 2.8,
+                        autoPlay: true,
+                        enlargeCenterPage: true,
+                        viewportFraction: 1.0,
+                        aspectRatio: 2.0,
+                      ),
+                      items: featuredRest.map((rest) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return SliderItem(
+                                name: rest.title,
+                                img: rest.image,
+                                isFav: false,
+                                rating: 5,
+                                raters: 23,
+                                ontap: () {
+                                  Navigator.pushNamed(
+                                      context, DetailsScreen.tag,
+                                      arguments: rest.uid);
+                                });
+                          },
+                        );
+                      }).toList(),
+                    );
+//                     return CarouselSlider(
+//                       items: map<Widget>(
+//                         restos,
+//                         (index, i) {
+//                           Map res = restos[index];
+//                           return SliderItem(
+//                               img: res['img'],
+//                               isFav: false,
+//                               name: res['name'],
+//                               rating: 5.0,
+//                               raters: 23,
+//                               ontap: () {
+//                                 Navigator.pushNamed(context, DetailsScreen.tag);
+//                               });
+//                         },
+//                       ).toList(),
+//                       /*map<Widget>(
+//                   foods,
+//                   (index, i) {
+//                     Map food = foods[index];
+//                     return SliderItem(
+//                       img: food['img'],
+//                       isFav: false,
+//                       name: food['name'],
+//                       rating: 5.0,
+//                       raters: 23,
+//                     );
+//                   },
+//                 ).toList(),*/
+//                       options: CarouselOptions(
+//                         height: MediaQuery.of(context).size.height / 2.4,
+//
+//                         autoPlay: true,
+// //                enlargeCenterPage: true,
+//                         viewportFraction: 1.0,
+// //              aspectRatio: 2.0,
+//                         onPageChanged: (index, reason) {
+//                           setState(() {
+//                             _current = index;
+//                           });
+//                         },
+//                       ),
+//                     );
+                  }
+                }),
+            //SizedBox(height: 20.0),
 
             Text(
               "Type",
