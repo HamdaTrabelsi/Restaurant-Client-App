@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:foodz_client/Screens/DetailsScreen.dart';
-import 'package:foodz_client/utils/Template/const.dart';
-import 'package:foodz_client/Widgets/smooth_star_rating.dart';
 
 class ReserveItem extends StatelessWidget {
   final String name;
   final String img;
-  final bool isFav;
-  final double rating;
-  final int raters;
+  final String date;
+  final String time;
+  final String seats;
+  //final bool isFav;
+  //final double rating;
+  //final int raters;
 
-  ReserveItem(
-      {Key key,
-      @required this.name,
-      @required this.img,
-      @required this.isFav,
-      @required this.rating,
-      @required this.raters})
-      : super(key: key);
+  ReserveItem({
+    Key key,
+    @required this.name,
+    @required this.img,
+    @required this.date,
+    @required this.time,
+    @required this.seats,
+    //@required this.isFav,
+    //@required this.rating,
+    //@required this.raters,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -32,105 +35,129 @@ class ReserveItem extends StatelessWidget {
         //     ),
         //   );
         // },
-        child: Row(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(left: 0.0, right: 10.0),
-              child: Container(
-                height: MediaQuery.of(context).size.width / 3.5,
-                width: MediaQuery.of(context).size.width / 3,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset(
-                    "$img",
-                    fit: BoxFit.cover,
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 5),
+          child: Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(left: 0.0, right: 10.0),
+                child: Container(
+                  height: MediaQuery.of(context).size.width / 4,
+                  width: MediaQuery.of(context).size.width / 4,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Image.asset(
+                      "$img",
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  "$name",
-                  style: TextStyle(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        "$name",
+                        style: TextStyle(
 //                    fontSize: 15,
-                    fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      SizedBox(height: 10.0),
+                      Row(
+                        children: <Widget>[
+                          Text(
+                            "Seats",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                          SizedBox(width: 6.0),
+                          Text(
+                            "$seats",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
+                      // Row(
+                      //   children: [
+                      //     Text(
+                      //       "Made 5 min ago",
+                      //       style: TextStyle(
+                      //         fontSize: 12,
+                      //         fontWeight: FontWeight.w300,
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                    ],
                   ),
-                ),
-                SizedBox(height: 10.0),
-                Row(
-                  children: <Widget>[
-                    StarRating(
-                      starCount: 1,
-                      color: Constants.ratingBG,
-                      allowHalfRating: true,
-                      rating: 5.0,
-                      size: 12.0,
-                    ),
-                    SizedBox(width: 6.0),
-                    Text(
-                      "5.0 (23 Reviews)",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300,
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Text(
+                            "Date",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                          SizedBox(width: 6.0),
+                          Text(
+                            "$date",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10.0),
-                Row(
-                  children: <Widget>[
-                    Text(
-                      "State",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300,
+                      SizedBox(height: 10.0),
+                      Row(
+                        children: <Widget>[
+                          Text(
+                            "Time",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                          SizedBox(width: 6.0),
+                          Text(
+                            "$time",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    SizedBox(width: 6.0),
-                    Text(
-                      "Accepted",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                // Row(
-                //   children: <Widget>[
-                //     Text(
-                //       "20 Pieces",
-                //       style: TextStyle(
-                //         fontSize: 11.0,
-                //         fontWeight: FontWeight.w300,
-                //       ),
-                //     ),
-                //     SizedBox(width: 10.0),
-                //     Text(
-                //       r"$90",
-                //       style: TextStyle(
-                //         fontSize: 14.0,
-                //         fontWeight: FontWeight.w900,
-                //         color: Theme.of(context).accentColor,
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 10.0),
-                // Text(
-                //   "Quantity: 1",
-                //   style: TextStyle(
-                //     fontSize: 11.0,
-                //     fontWeight: FontWeight.w300,
-                //   ),
-                // ),
-              ],
-            ),
-          ],
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

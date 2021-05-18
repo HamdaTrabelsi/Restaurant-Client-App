@@ -5,7 +5,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 
 class ActivityWidget extends StatelessWidget {
   final String imageUrl;
-  final int price;
+  final int people;
   final String name;
   final String type;
   final double rating;
@@ -13,7 +13,7 @@ class ActivityWidget extends StatelessWidget {
 
   const ActivityWidget(
       {this.imageUrl,
-      this.price,
+      this.people,
       this.name,
       this.type,
       this.rating,
@@ -47,10 +47,15 @@ class ActivityWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text("\$ $price",
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
-                Text("per pax", style: TextStyle(color: Colors.grey))
+                Row(
+                  children: [
+                    Icon(Icons.supervisor_account_sharp),
+                    Text(" $people",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20.0)),
+                  ],
+                ),
+                Text("people", style: TextStyle(color: Colors.grey))
               ],
             ),
           ),

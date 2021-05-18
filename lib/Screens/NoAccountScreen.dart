@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:foodz_client/Screens/MainScreen.dart';
 import 'package:foodz_client/Screens/Welcome.dart';
 import 'package:foodz_client/utils/Template/common.dart';
 import 'package:foodz_client/utils/Template/const.dart';

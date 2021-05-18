@@ -14,6 +14,51 @@
       },
       "oauth_client": [
         {
+          "client_id": "823363281824-aks04mp5otfvf5d253jc1ktojina5q18.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sesame.foodz_client",
+            "certificate_hash": "6be7cdc60e68b1cc49fd88d3d2f2b89b95584b26"
+          }
+        },
+        {
+          "client_id": "823363281824-v6139dl8c7t32tf1qair3a0v16u1lfk1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeJaBKgwLf9t2ii92t6r_BklC86yZL9EA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "823363281824-v6139dl8c7t32tf1qair3a0v16u1lfk1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823363281824:android:17191eaf37ae2cc053fac5",
+        "android_client_info": {
+          "package_name": "com.sesame.foodz_owner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823363281824-e9fp7d36lvsdu9vfdbleqo25k05cvqth.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sesame.foodz_owner",
+            "certificate_hash": "6be7cdc60e68b1cc49fd88d3d2f2b89b95584b26"
+          }
+        },
+        {
           "client_id": "823363281824-v6139dl8c7t32tf1qair3a0v16u1lfk1.apps.googleusercontent.com",
           "client_type": 3
         }

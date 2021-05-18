@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:foodz_client/Screens/NoAccountScreen.dart';
 import 'package:foodz_client/Widgets/RoundIconButton.dart';
 import 'package:foodz_client/Database/ReservationDB.dart';
 import 'package:foodz_client/utils/ErrorFlushBar.dart';
@@ -7,6 +9,8 @@ import 'package:foodz_client/utils/Template/common.dart';
 import 'package:date_format/date_format.dart';
 import 'package:foodz_client/utils/colors.dart';
 import 'package:intl/intl.dart';
+
+final _auth = FirebaseAuth.instance;
 
 class BookingWidget extends StatefulWidget {
   const BookingWidget({
@@ -23,6 +27,8 @@ class BookingWidget extends StatefulWidget {
 class _BookingWidgetState extends State<BookingWidget> {
   //String _setTime, _setDate;
 
+  bool _sent = false;
+  bool _loading = false;
   String _hour = "", _minute = "", _time;
 
   String dateTime;
@@ -324,41 +330,68 @@ class _BookingWidgetState extends State<BookingWidget> {
             ),
             //color: Color(0xFF309DF1),
             color: kPrimaryColor,
-            child: Text(
-              'Book',
-              style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onPressed: () {
-              if (_people == 0) {
-                ErrorFlush.showErrorFlush(
-                    context: context,
-                    message: "Number of people should be higher than 0");
-              } else if (_hour == null || _hour == "00" || _minute.isEmpty) {
-                ErrorFlush.showErrorFlush(
-                    context: context, message: "Enter a valid time");
-              } else if (selectedDate
-                  .difference(DateTime.now())
-                  .inDays
-                  .isNegative) {
-                ErrorFlush.showErrorFlush(
-                    context: context, message: "Enter a valid Date");
-              } else {
-                resDB
-                    .addNewReservation(
-                        restoId: widget.restId,
-                        reservationTime: "$_hour : $_minute",
-                        reservationDay: selectedDate,
-                        people: _people.toString())
-                    .onError((error, stackTrace) => ErrorFlush.showErrorFlush(
-                        context: context, message: error.toString()))
-                    .whenComplete(() => SuccessFlush.showSuccessFlush(
-                        context: context, message: "Reservation Sent !"));
-              }
-            },
+            child: _loading
+                ? CircularProgressIndicator(
+                    backgroundColor: Colors.white,
+                  )
+                : Text(
+                    _sent ? 'Awaiting approval' : 'Book',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+            onPressed: _loading
+                ? null
+                : () {
+                    if (_sent) {
+                      SuccessFlush.showSuccessFlush(
+                          context: context,
+                          message: "Your reservation has already been sent !");
+                    } else {
+                      if (_people == 0) {
+                        ErrorFlush.showErrorFlush(
+                            context: context,
+                            message:
+                                "Number of people should be higher than 0");
+                      } else if (_hour == null ||
+                          _hour == "00" ||
+                          _minute.isEmpty) {
+                        ErrorFlush.showErrorFlush(
+                            context: context, message: "Enter a valid time");
+                      } else if (selectedDate
+                          .difference(DateTime.now())
+                          .inDays
+                          .isNegative) {
+                        ErrorFlush.showErrorFlush(
+                            context: context, message: "Enter a valid Date");
+                      } else {
+                        _loading = true;
+                        resDB
+                            .addNewReservation(
+                                restoId: widget.restId,
+                                reservationTime: /*"$_hour : $_minute"*/ selectedTime
+                                    .format(context)
+                                    .toString(),
+                                reservationDay: selectedDate,
+                                people: _people.toString())
+                            .onError((error, stackTrace) =>
+                                ErrorFlush.showErrorFlush(
+                                    context: context,
+                                    message: error.toString()))
+                            .whenComplete(() {
+                          _sent = true;
+                          SuccessFlush.showSuccessFlush(
+                              context: context, message: "Reservation Sent !");
+                        }).then((value) {
+                          setState(() {
+                            _loading = false;
+                          });
+                        });
+                      }
+                    }
+                  },
           ),
           SizedBox(height: 30.0),
           SizedBox(height: 20.0),

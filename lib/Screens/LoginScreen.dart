@@ -101,24 +101,24 @@ class LoginScreenState extends State<LoginScreen> {
                 password = value;
               }),
               SizedBox(height: 14),
-              Container(
-                margin: EdgeInsets.only(left: 16),
-                child: Row(
-                  children: <Widget>[
-                    Checkbox(
-                      focusColor: t3_colorPrimary,
-                      activeColor: t3_colorPrimary,
-                      value: isRemember,
-                      onChanged: (bool value) {
-                        setState(() {
-                          isRemember = value;
-                        });
-                      },
-                    ),
-                    text(t3_lbl_remember)
-                  ],
-                ),
-              ),
+              // Container(
+              //   margin: EdgeInsets.only(left: 16),
+              //   child: Row(
+              //     children: <Widget>[
+              //       Checkbox(
+              //         focusColor: t3_colorPrimary,
+              //         activeColor: t3_colorPrimary,
+              //         value: isRemember,
+              //         onChanged: (bool value) {
+              //           setState(() {
+              //             isRemember = value;
+              //           });
+              //         },
+              //       ),
+              //       text(t3_lbl_remember)
+              //     ],
+              //   ),
+              // ),
               SizedBox(height: 14),
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),

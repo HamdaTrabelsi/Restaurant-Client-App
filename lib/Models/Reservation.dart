@@ -29,7 +29,9 @@ class Reservation {
     restoId = json['restoId'];
     clientId = json['clientId'];
     people = json['people'];
-    reservationDay = json['reservationDay'];
+    Timestamp resDay = json['reservationDay'];
+    reservationDay = resDay.toDate();
+    reservationTime = json['reservationTime'];
     sent = json['sent'];
     state = json['state'];
   }

@@ -36,9 +36,6 @@ class WelcomeScreenState extends State<WelcomeScreen> {
   User _user;
   Authentication authentication = Authentication();
 
-
-
-
   //final fbLogin = FacebookLogin();
 
   @override
@@ -209,7 +206,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                       GestureDetector(
                         onTap: () {
                           //launchScreen(context, RegisterScreen.tag);
-                          Navigator.pop(context);
+                          //Navigator.pop(context);
                           Navigator.pushNamed(context, LoginScreen.tag);
                         },
                         child: Container(

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodz_client/Models/Restaurant.dart';
+import 'package:foodz_client/Screens/NoAccountScreen.dart';
 import 'package:foodz_client/Screens/NotificationScreen.dart';
 import 'package:foodz_client/utils/Template/Restaurants.dart';
 //import 'package:restaurant_ui_kit/screens/notifications.dart';
@@ -11,6 +13,8 @@ import 'package:foodz_client/Widgets/badge.dart';
 import 'package:foodz_client/Widgets/smooth_star_rating.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:foodz_client/Screens/BookingWidget.dart';
+
+final _auth = FirebaseAuth.instance;
 
 class RestInfoScreen extends StatefulWidget {
   static String tag = '/DetailsRestInfoScreen';
@@ -384,10 +388,12 @@ class _RestInfoScreen extends State<RestInfoScreen> {
           ),
           body: TabBarView(
             children: [
-              BookingWidget(
-                scrollController: scrollController,
-                restId: widget.restoId,
-              ),
+              _auth.currentUser == null
+                  ? NoAccountScreen()
+                  : BookingWidget(
+                      scrollController: scrollController,
+                      restId: widget.restoId,
+                    ),
             ],
           ),
         ),
