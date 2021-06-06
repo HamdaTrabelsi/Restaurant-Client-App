@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "823363281824-qoihb4b6rejvscru3abi9sligcmblc3k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sesame.foodz_client",
+            "certificate_hash": "8e796a521223e5a4acdcef13dd1721a1c14801b2"
+          }
+        },
+        {
           "client_id": "823363281824-v6139dl8c7t32tf1qair3a0v16u1lfk1.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -56,6 +64,14 @@
           "android_info": {
             "package_name": "com.sesame.foodz_owner",
             "certificate_hash": "6be7cdc60e68b1cc49fd88d3d2f2b89b95584b26"
+          }
+        },
+        {
+          "client_id": "823363281824-obkuohk1snda2k8f38k8r8tankg58e6a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sesame.foodz_owner",
+            "certificate_hash": "8e796a521223e5a4acdcef13dd1721a1c14801b2"
           }
         },
         {

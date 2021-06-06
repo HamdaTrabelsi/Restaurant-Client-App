@@ -17,6 +17,28 @@ class DismissibleWidget<T> extends StatelessWidget {
         key: ObjectKey(item),
         background: buildSwipeActionLeft(),
         child: child,
+        confirmDismiss: (direction) async {
+          return await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("Confirm"),
+                content: const Text(
+                  "Do you want to cancel this reservation ?",
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      child: const Text("CONFIRM")),
+                  FlatButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text("CANCEL"),
+                  ),
+                ],
+              );
+            },
+          );
+        },
         onDismissed: ondismissed);
   }
 

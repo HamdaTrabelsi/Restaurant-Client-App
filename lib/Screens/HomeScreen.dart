@@ -13,7 +13,7 @@ import 'package:foodz_client/Widgets/slider_item.dart';
 import 'package:foodz_client/utils/Template/Restaurants.dart';
 import 'package:foodz_client/utils/Template/foods.dart';
 import 'package:foodz_client/utils/Template/categories.dart';
-import 'package:foodz_client/utils/Template/cuisines.dart';
+import 'package:foodz_client/utils/Template/Cuisines.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeScreen extends StatefulWidget {

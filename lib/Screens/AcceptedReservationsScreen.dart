@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:foodz_client/Database/ReservationDB.dart';
 import 'package:foodz_client/Models/Reservation.dart';
 import 'package:foodz_client/Models/Restaurant.dart';
 import 'package:foodz_client/Screens/CheckoutScreen.dart';
@@ -13,52 +14,12 @@ import 'package:foodz_client/utils/Template/foods.dart';
 import 'package:foodz_client/Widgets/ReservItem.dart';
 import 'package:foodz_client/Widgets/DismissibleWidget.dart';
 import 'package:foodz_client/utils/Util.dart';
-
-List reservations = [
-  {
-    "img": "images/resto/rest1.jpg",
-    "comment": "Nulla porttitor accumsan tincidunt. Vestibulum ante "
-        "ipsum primis in faucibus orci luctus et ultrices posuere "
-        "cubilia Curae",
-    "name": "Jane Doe",
-    "seats": "4",
-    "time": "14:15",
-    "date": "24 / 08 / 2020"
-  },
-  {
-    "img": "images/resto/rest2.png",
-    "comment": "Nulla porttitor accumsan tincidunt. Vestibulum ante "
-        "ipsum primis in faucibus orci luctus et ultrices posuere "
-        "cubilia Curae",
-    "name": "Jane Doe",
-    "seats": "9",
-    "time": "17:15",
-    "date": "24 / 15 / 2021"
-  },
-  {
-    "img": "images/resto/rest2.png",
-    "comment": "Nulla porttitor accumsan tincidunt. Vestibulum ante "
-        "ipsum primis in faucibus orci luctus et ultrices posuere "
-        "cubilia Curae",
-    "name": "Jane Doe",
-    "seats": "2",
-    "time": "14:15",
-    "date": "14 / 09 / 2020"
-  },
-  {
-    "img": "images/resto/rest2.png",
-    "comment": "Nulla porttitor accumsan tincidunt. Vestibulum ante "
-        "ipsum primis in faucibus orci luctus et ultrices posuere "
-        "cubilia Curae",
-    "name": "Jane Doe",
-    "seats": "4",
-    "time": "14:15",
-    "date": "24 / 08 / 2020"
-  },
-];
+import 'package:intl/intl.dart';
 
 final _auth = FirebaseAuth.instance;
 User _loggedInUser;
+DateFormat _formatter = DateFormat('yyyy-MM-dd');
+ReservationDB resDB = ReservationDB();
 
 class AcceptedReservationsScreen extends StatefulWidget {
   static String tag = '/AcceptedReservationsScreen';
@@ -121,7 +82,8 @@ class _AcceptedReservationsScreen extends State<AcceptedReservationsScreen>
                   return DismissibleWidget(
                     item: rev,
                     ondismissed: (direction) {
-                      dismissItem(context, index, direction);
+                      //dismissItem(context, index, direction);
+                      dismissAction(rev.uid);
                     },
                     child: StreamBuilder(
                         stream: FirebaseFirestore.instance
@@ -143,8 +105,11 @@ class _AcceptedReservationsScreen extends State<AcceptedReservationsScreen>
                               type: rest.title,
                               rating: 5,
                               name: rest.title,
-                              people: 4,
-                              times: ["24/02/2021", rev.reservationTime],
+                              people: rev.people,
+                              times: [
+                                _formatter.format(rev.reservationDay),
+                                rev.reservationTime
+                              ],
                               imageUrl: rest.image,
                             );
                           } else {
@@ -216,17 +181,21 @@ class _AcceptedReservationsScreen extends State<AcceptedReservationsScreen>
     // ),
   }
 
-  void dismissItem(
+  /*void dismissItem(
       BuildContext context, int index, DismissDirection direction) {
     setState(() {
       reservations.removeAt(index);
     });
     ErrorFlush.showErrorFlush(
         context: context, message: 'This reservation has been cancelled');
-  }
+  }*/
 
   @override
   bool get wantKeepAlive => true;
+
+  Future<void> dismissAction(String id) async {
+    await resDB.editReservationState(state: "Canceled", id: id);
+  }
 
 // void dismissItem(
 //     BuildContext context, int index, DismissDirection direction) {

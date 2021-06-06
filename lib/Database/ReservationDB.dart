@@ -23,11 +23,11 @@ class ReservationDB {
   }) async {
     //DocumentReference documentReference = userCollection.doc(id);
     myUser = _auth.currentUser;
-    String docId = myUser.uid + restoId;
+    //String docId = myUser.uid + restoId;
     DocumentReference documentReferencer = reservationCollection.doc();
 
     Reservation res = new Reservation(
-        uid: docId,
+        uid: documentReferencer.id,
         restoId: restoId,
         clientId: myUser.uid,
         sent: Timestamp.now(),
@@ -39,5 +39,14 @@ class ReservationDB {
     var data = res.toJson();
     //
     await documentReferencer.set(data).catchError((e) => throw (e));
+  }
+
+  Future<void> editReservationState(
+      {@required String id, @required String state}) async {
+    DocumentReference documentReference = reservationCollection.doc(id);
+
+    await documentReference.update({"state": state}).catchError((e) {
+      throw (e);
+    });
   }
 }

@@ -5,7 +5,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 
 class ActivityWidget extends StatelessWidget {
   final String imageUrl;
-  final int people;
+  final String people;
   final String name;
   final String type;
   final double rating;
@@ -34,6 +34,7 @@ class ActivityWidget extends StatelessWidget {
           Positioned(
               right: 10.0,
               child: Card(
+                color: Theme.of(context).primaryColor,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0)),
                 child: Container(
@@ -80,7 +81,7 @@ class ActivityWidget extends StatelessWidget {
                   size: 10.0,
                   color: Colors.yellow,
                 ),
-                _buildSchedule(times)
+                _buildSchedule(times, color: Theme.of(context).accentColor)
               ],
             ),
           ),
@@ -101,14 +102,17 @@ class ActivityWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildSchedule(List<String> times) {
+  Widget _buildSchedule(List<String> times, {Color color}) {
     List<Padding> slots = new List<Padding>();
     for (String time in times) {
       var slot = Padding(
         padding: EdgeInsets.only(left: 2.0, right: 2.0),
         child: new Chip(
-          label: Text(time),
-          backgroundColor: Colors.blue[100],
+          label: Text(
+            time,
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: color,
         ),
       );
 

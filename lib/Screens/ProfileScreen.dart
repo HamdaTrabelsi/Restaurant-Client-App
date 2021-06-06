@@ -626,7 +626,7 @@ class _ProfileScreen extends State<ProfileScreen> {
     return StatefulBuilder(
         builder: (contex, StateSetter setModalState /*You can rename this!*/) {
       return AnimatedPadding(
-          padding: MediaQuery.of(context).viewInsets,
+          padding: MediaQuery.of(contex).viewInsets,
           duration: const Duration(milliseconds: 100),
           curve: Curves.decelerate,
           child: Container(
@@ -697,7 +697,7 @@ class _ProfileScreen extends State<ProfileScreen> {
     return StatefulBuilder(
         builder: (contex, StateSetter setModalState /*You can rename this!*/) {
       return AnimatedPadding(
-          padding: MediaQuery.of(context).viewInsets,
+          padding: MediaQuery.of(contex).viewInsets,
           duration: const Duration(milliseconds: 100),
           curve: Curves.decelerate,
           child: Container(
@@ -787,7 +787,7 @@ class _ProfileScreen extends State<ProfileScreen> {
     return StatefulBuilder(
         builder: (contex, StateSetter setModalState /*You can rename this!*/) {
       return AnimatedPadding(
-          padding: MediaQuery.of(context).viewInsets,
+          padding: MediaQuery.of(contex).viewInsets,
           duration: const Duration(milliseconds: 100),
           curve: Curves.decelerate,
           child: Container(

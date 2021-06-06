@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:foodz_client/Database/ReservationDB.dart';
 import 'package:foodz_client/Models/Reservation.dart';
 import 'package:foodz_client/Models/Restaurant.dart';
 import 'package:foodz_client/Screens/CheckoutScreen.dart';
@@ -13,52 +14,12 @@ import 'package:foodz_client/utils/Template/foods.dart';
 import 'package:foodz_client/Widgets/ReservItem.dart';
 import 'package:foodz_client/Widgets/DismissibleWidget.dart';
 import 'package:foodz_client/utils/Util.dart';
+import 'package:intl/intl.dart';
 
-List reservations = [
-  {
-    "img": "images/resto/rest1.jpg",
-    "comment": "Nulla porttitor accumsan tincidunt. Vestibulum ante "
-        "ipsum primis in faucibus orci luctus et ultrices posuere "
-        "cubilia Curae",
-    "name": "Jane Doe",
-    "seats": "4",
-    "time": "14:15",
-    "date": "24 / 08 / 2020"
-  },
-  {
-    "img": "images/resto/rest2.png",
-    "comment": "Nulla porttitor accumsan tincidunt. Vestibulum ante "
-        "ipsum primis in faucibus orci luctus et ultrices posuere "
-        "cubilia Curae",
-    "name": "Jane Doe",
-    "seats": "9",
-    "time": "17:15",
-    "date": "24 / 15 / 2021"
-  },
-  {
-    "img": "images/resto/rest2.png",
-    "comment": "Nulla porttitor accumsan tincidunt. Vestibulum ante "
-        "ipsum primis in faucibus orci luctus et ultrices posuere "
-        "cubilia Curae",
-    "name": "Jane Doe",
-    "seats": "2",
-    "time": "14:15",
-    "date": "14 / 09 / 2020"
-  },
-  {
-    "img": "images/resto/rest2.png",
-    "comment": "Nulla porttitor accumsan tincidunt. Vestibulum ante "
-        "ipsum primis in faucibus orci luctus et ultrices posuere "
-        "cubilia Curae",
-    "name": "Jane Doe",
-    "seats": "4",
-    "time": "14:15",
-    "date": "24 / 08 / 2020"
-  },
-];
-
+DateFormat _formatter = DateFormat('yyyy-MM-dd');
 final _auth = FirebaseAuth.instance;
 User _loggedInUser;
+ReservationDB resDB = ReservationDB();
 
 class PendingReservationsScreen extends StatefulWidget {
   static String tag = '/PendingReservationsScreen';
@@ -118,7 +79,8 @@ class _PendingReservationsScreen extends State<PendingReservationsScreen>
               return DismissibleWidget(
                 item: rev,
                 ondismissed: (direction) {
-                  dismissItem(context, index, direction);
+                  //dismissItem(context, index, direction);
+                  dismissAction(rev.uid);
                 },
                 child: StreamBuilder(
                     stream: FirebaseFirestore.instance
@@ -140,8 +102,11 @@ class _PendingReservationsScreen extends State<PendingReservationsScreen>
                           type: rest.title,
                           rating: 5,
                           name: rest.title,
-                          people: 4,
-                          times: ["24/02/2021", rev.reservationTime],
+                          people: rev.people,
+                          times: [
+                            _formatter.format(rev.reservationDay),
+                            rev.reservationTime
+                          ],
                           imageUrl: rest.image,
                         );
                       } else {
@@ -213,23 +178,10 @@ class _PendingReservationsScreen extends State<PendingReservationsScreen>
     // ),
   }
 
-  void dismissItem(
-      BuildContext context, int index, DismissDirection direction) {
-    setState(() {
-      reservations.removeAt(index);
-    });
-    ErrorFlush.showErrorFlush(
-        context: context, message: 'This reservation has been cancelled');
-  }
-
   @override
   bool get wantKeepAlive => true;
 
-// void dismissItem(
-//     BuildContext context, int index, DismissDirection direction) {
-//   setState(() {
-//     restos.removeAt(index);
-//   });
-//   Util.showSnackBar(context, 'This reservation has been cancelled');
-// }
+  Future<void> dismissAction(String id) async {
+    await resDB.editReservationState(state: "Canceled", id: id);
+  }
 }
