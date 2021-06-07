@@ -527,109 +527,100 @@ class ReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
-      ),
-      elevation: 1,
-      child: FutureBuilder(
-        future: FirebaseFirestore.instance
-            .collection('users')
-            .doc(rev.userId)
-            .get(),
-        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: Container(child: CircularProgressIndicator()));
-          }
-          Utilisateur user = Utilisateur.fromJson(snapshot.data.data());
-          return ListTile(
-            leading: CircleAvatar(
-              radius: 25.0,
-              backgroundImage: NetworkImage(
-                user.image,
+    return FutureBuilder(
+      future:
+          FirebaseFirestore.instance.collection('users').doc(rev.userId).get(),
+      builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: Container(child: CircularProgressIndicator()));
+        }
+        Utilisateur user = Utilisateur.fromJson(snapshot.data.data());
+        return ListTile(
+          leading: CircleAvatar(
+            radius: 25.0,
+            backgroundImage: NetworkImage(
+              user.image,
+            ),
+          ),
+          title: FutureBuilder(
+              future: FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(rev.userId)
+                  .get(),
+              builder: (context, AsyncSnapshot<DocumentSnapshot> usersnapshot) {
+                if (usersnapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                      child: Container(child: CircularProgressIndicator()));
+                }
+                Utilisateur user =
+                    Utilisateur.fromJson(usersnapshot.data.data());
+                return Text(user.username);
+              }),
+          subtitle: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  StarRating(
+                    starCount: 5,
+                    color: Constants.ratingBG,
+                    allowHalfRating: true,
+                    rating: rev.stars,
+                    size: 12.0,
+                  ),
+                  SizedBox(width: 6.0),
+                  Text(
+                    DateFormat.yMMMd().add_jm().format(rev.posted.toDate()),
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                ],
               ),
-            ),
-            title: FutureBuilder(
-                future: FirebaseFirestore.instance
-                    .collection("users")
-                    .doc(rev.userId)
-                    .get(),
-                builder:
-                    (context, AsyncSnapshot<DocumentSnapshot> usersnapshot) {
-                  if (usersnapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                        child: Container(child: CircularProgressIndicator()));
-                  }
-                  Utilisateur user =
-                      Utilisateur.fromJson(usersnapshot.data.data());
-                  return Text(user.username);
-                }),
-            subtitle: Column(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    StarRating(
-                      starCount: 5,
-                      color: Constants.ratingBG,
-                      allowHalfRating: true,
-                      rating: rev.stars,
-                      size: 12.0,
-                    ),
-                    SizedBox(width: 6.0),
-                    Text(
-                      DateFormat.yMMMd().add_jm().format(rev.posted.toDate()),
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 7.0),
-                Text(
-                  rev.description,
-                ),
-              ],
-            ),
-          );
-        },
-        // child: ListTile(
-        //   leading: CircleAvatar(
-        //     radius: 25.0,
-        //     backgroundImage: AssetImage(
-        //       "",
-        //     ),
-        //   ),
-        //   title: Text("me"),
-        //   subtitle: Column(
-        //     children: <Widget>[
-        //       Row(
-        //         children: <Widget>[
-        //           StarRating(
-        //             starCount: 5,
-        //             color: Constants.ratingBG,
-        //             allowHalfRating: true,
-        //             rating: rev.stars,
-        //             size: 12.0,
-        //           ),
-        //           SizedBox(width: 6.0),
-        //           Text(
-        //             rev.posted.toDate().toString(),
-        //             style: TextStyle(
-        //               fontSize: 12,
-        //               fontWeight: FontWeight.w300,
-        //             ),
-        //           ),
-        //         ],
-        //       ),
-        //       SizedBox(height: 7.0),
-        //       Text(
-        //         rev.description,
-        //       ),
-        //     ],
-        //   ),
-        // ),
-      ),
+              SizedBox(height: 7.0),
+              Text(
+                rev.description,
+              ),
+            ],
+          ),
+        );
+      },
+      // child: ListTile(
+      //   leading: CircleAvatar(
+      //     radius: 25.0,
+      //     backgroundImage: AssetImage(
+      //       "",
+      //     ),
+      //   ),
+      //   title: Text("me"),
+      //   subtitle: Column(
+      //     children: <Widget>[
+      //       Row(
+      //         children: <Widget>[
+      //           StarRating(
+      //             starCount: 5,
+      //             color: Constants.ratingBG,
+      //             allowHalfRating: true,
+      //             rating: rev.stars,
+      //             size: 12.0,
+      //           ),
+      //           SizedBox(width: 6.0),
+      //           Text(
+      //             rev.posted.toDate().toString(),
+      //             style: TextStyle(
+      //               fontSize: 12,
+      //               fontWeight: FontWeight.w300,
+      //             ),
+      //           ),
+      //         ],
+      //       ),
+      //       SizedBox(height: 7.0),
+      //       Text(
+      //         rev.description,
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }
