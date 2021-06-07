@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -54,5 +55,33 @@ class ReviewDB {
         .update({"description": description, "stars": stars})
         .whenComplete(() => print("resto added"))
         .catchError((e) => throw (e));
+  }
+
+  Future<Map<String, double>> reviewInfo({@required String restoId}) async {
+    QuerySnapshot reviewDocs =
+        await reviewCollection.where("restoId", isEqualTo: restoId).get();
+
+    Map<String, double> revInfo = {};
+
+    List<Review> allRev = [];
+    double sumRev = 0;
+    double avgRev = 0;
+
+    reviewDocs.docs.forEach((element) {
+      allRev.add(Review.fromJson(element));
+    });
+
+    allRev.forEach((element) {
+      sumRev += element.stars;
+    });
+
+    avgRev = sumRev / allRev.length;
+
+    revInfo.addAll({
+      "number": allRev.length.toDouble(),
+      "average": avgRev.isNaN ? 0 : avgRev
+    });
+    //print(avgRev);
+    return revInfo;
   }
 }

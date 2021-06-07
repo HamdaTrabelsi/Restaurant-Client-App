@@ -33,6 +33,7 @@ class RestInfoScreen extends StatefulWidget {
 
 class _RestInfoScreen extends State<RestInfoScreen> {
   List<Review> _reviews = [];
+  List<double> _revInfo = [];
 
   void getCurrentUser() {
     try {
@@ -45,9 +46,22 @@ class _RestInfoScreen extends State<RestInfoScreen> {
     }
   }
 
+  void getReviewInfo() {
+    try {
+      if (_revInfo.isEmpty) {
+        revDB.reviewInfo(restoId: widget.restoId).then((value) => setState(() {
+              _revInfo = value.values.toList();
+            }));
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   void initState() {
     getCurrentUser();
+    getReviewInfo();
     super.initState();
   }
 
@@ -170,7 +184,7 @@ class _RestInfoScreen extends State<RestInfoScreen> {
                                         child: Row(
                                           children: <Widget>[
                                             StarRating(
-                                              starCount: 5,
+                                              starCount: _revInfo[1].round(),
                                               color: Constants.ratingBG,
                                               allowHalfRating: true,
                                               rating: 5.0,
@@ -178,7 +192,7 @@ class _RestInfoScreen extends State<RestInfoScreen> {
                                             ),
                                             SizedBox(width: 10.0),
                                             Text(
-                                              "5.0 (23 Reviews)",
+                                              "${_revInfo[1]} (${_revInfo[0]} Reviews)",
                                               style: TextStyle(
                                                 fontSize: 11.0,
                                               ),
@@ -188,41 +202,44 @@ class _RestInfoScreen extends State<RestInfoScreen> {
                                       ),
                                     ],
                                   ),
-                                  StreamBuilder(
-                                      stream: FirebaseFirestore.instance
-                                          .collection("favourites")
-                                          .where("userId",
-                                              isEqualTo: _loggedInUser.uid)
-                                          .where("restaurantId",
-                                              isEqualTo: resto.uid)
-                                          .snapshots(),
-                                      builder: (context,
-                                          AsyncSnapshot<QuerySnapshot>
-                                              favsnapshot) {
-                                        if (favsnapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return Center(
-                                              child: Container(
-                                                  child:
-                                                      CircularProgressIndicator()));
-                                        }
-                                        if (favsnapshot.data.docs.isNotEmpty) {
-                                          Favourite fv = Favourite.fromJson(
-                                              favsnapshot.data.docs[0]);
-                                          return favouriteButton(
-                                            favId: fv.uid,
-                                            resto: resto,
-                                            isFav: true,
-                                            userId: _loggedInUser.uid,
-                                          );
-                                        } else {
-                                          return favouriteButton(
-                                            resto: resto,
-                                            isFav: false,
-                                            userId: _loggedInUser.uid,
-                                          );
-                                        }
-                                      })
+                                  _auth.currentUser != null
+                                      ? StreamBuilder(
+                                          stream: FirebaseFirestore.instance
+                                              .collection("favourites")
+                                              .where("userId",
+                                                  isEqualTo: _loggedInUser.uid)
+                                              .where("restaurantId",
+                                                  isEqualTo: resto.uid)
+                                              .snapshots(),
+                                          builder: (context,
+                                              AsyncSnapshot<QuerySnapshot>
+                                                  favsnapshot) {
+                                            if (favsnapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return Center(
+                                                  child: Container(
+                                                      child:
+                                                          CircularProgressIndicator()));
+                                            }
+                                            if (favsnapshot
+                                                .data.docs.isNotEmpty) {
+                                              Favourite fv = Favourite.fromJson(
+                                                  favsnapshot.data.docs[0]);
+                                              return favouriteButton(
+                                                favId: fv.uid,
+                                                resto: resto,
+                                                isFav: true,
+                                                userId: _loggedInUser.uid,
+                                              );
+                                            } else {
+                                              return favouriteButton(
+                                                resto: resto,
+                                                isFav: false,
+                                                userId: _loggedInUser.uid,
+                                              );
+                                            }
+                                          })
+                                      : Container(),
                                 ],
                               ),
                               SizedBox(height: 20.0),

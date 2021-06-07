@@ -86,7 +86,7 @@ class GridCategory extends StatelessWidget {
                   size: 10.0,
                 ),
                 Text(
-                  " $rating ($raters Reviews)",
+                  raters == 0 ? "No Reviews" : " $rating ($raters Reviews)",
                   style: TextStyle(
                     fontSize: 11.0,
                   ),

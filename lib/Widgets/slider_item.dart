@@ -43,7 +43,7 @@ class SliderItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(
+                /*Positioned(
                   right: -10.0,
                   bottom: 3.0,
                   child: RawMaterialButton(
@@ -60,7 +60,7 @@ class SliderItem extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
+                ),*/
               ],
             ),
             Padding(
@@ -86,7 +86,7 @@ class SliderItem extends StatelessWidget {
                     size: 10.0,
                   ),
                   Text(
-                    " $rating ($raters Reviews)",
+                    rating == 0 ? "No reviews" : " $rating ($raters Reviews)",
                     style: TextStyle(
                       fontSize: 11.0,
                     ),

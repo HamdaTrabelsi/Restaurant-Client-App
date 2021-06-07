@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:foodz_client/Database/RestaurantDB.dart';
+import 'package:foodz_client/Database/ReviewDB.dart';
 import 'package:foodz_client/Models/Restaurant.dart';
+import 'package:foodz_client/Models/Review.dart';
 import 'package:foodz_client/Screens/DetailsScreen.dart';
 import 'package:foodz_client/Screens/CuisinesScreen.dart';
 //import 'package:restaurant_ui_kit/screens/dishes.dart';
@@ -26,7 +29,12 @@ class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin<HomeScreen> {
   List<Restaurant> featuredRest = [];
   List<Restaurant> worthCheck = [];
-
+  List<Restaurant> _featured = [];
+  ReviewDB _reviewDB = ReviewDB();
+  RestaurantDB _resDb = RestaurantDB();
+  List<Review> _lstRev = [];
+  double _revavg = 0;
+  double _sumavg = 0;
   // List<T> map<T>(List list, Function handler) {
   //   List<T> result = [];
   //   for (var i = 0; i < list.length; i++) {
@@ -35,8 +43,25 @@ class _HomeScreenState extends State<HomeScreen>
   //
   //   return result;
   // }
-
   int _current = 0;
+
+  void getFeatured() {
+    try {
+      if (_featured.isEmpty) {
+        _resDb.getFeatured().then((value) => setState(() {
+              _featured = value;
+            }));
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    getFeatured();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen>
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                FlatButton(
+                /*FlatButton(
                   child: Text(
                     "View More",
                     style: TextStyle(
@@ -112,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     );
                   },
-                ),
+                ),*/
               ],
             ),
 
@@ -120,48 +145,59 @@ class _HomeScreenState extends State<HomeScreen>
 
             //Slider Here
 
-            FutureBuilder(
-                future:
-                    FirebaseFirestore.instance.collection('restaurant').get(),
-                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                        child: Container(child: CircularProgressIndicator()));
-                  } else {
-                    featuredRest.clear();
-                    snapshot.data.docs.forEach((element) {
-                      featuredRest.add(Restaurant.fromJson(element));
-                    });
+            CarouselSlider(
+              options: CarouselOptions(
+                //height: MediaQuery.of(context).size.height / 2.4,
+                height: MediaQuery.of(context).size.height / 2.8,
+                autoPlay: true,
+                enlargeCenterPage: true,
+                viewportFraction: 1.0,
+                aspectRatio: 2.0,
+              ),
+              items: _featured.map((rest) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return FutureBuilder(
+                        future: FirebaseFirestore.instance
+                            .collection('review')
+                            .where("restoId", isEqualTo: rest.uid)
+                            .get(),
+                        builder: (context,
+                            AsyncSnapshot<QuerySnapshot> revsnapshot) {
+                          if (revsnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                                child: Container(
+                                    child: CircularProgressIndicator()));
+                          } else {
+                            _lstRev.clear();
+                            _sumavg = 0;
+                            revsnapshot.data.docs.forEach((element) {
+                              _lstRev.add(Review.fromJson(element));
+                            });
+                            _lstRev.forEach((element) {
+                              _sumavg += element.stars;
+                            });
 
-                    return CarouselSlider(
-                      options: CarouselOptions(
-                        //height: MediaQuery.of(context).size.height / 2.4,
-                        height: MediaQuery.of(context).size.height / 2.8,
-                        autoPlay: true,
-                        enlargeCenterPage: true,
-                        viewportFraction: 1.0,
-                        aspectRatio: 2.0,
-                      ),
-                      items: featuredRest.map((rest) {
-                        return Builder(
-                          builder: (BuildContext context) {
+                            _revavg = _sumavg / _lstRev.length;
                             return SliderItem(
                                 name: rest.title,
                                 img: rest.image,
                                 isFav: false,
-                                rating: 5,
-                                raters: 23,
+                                rating: _revavg.isFinite ? _revavg : 0,
+                                raters: _lstRev.length,
                                 ontap: () {
                                   Navigator.pushNamed(
                                       context, DetailsScreen.tag,
                                       arguments: rest.uid);
                                 });
-                          },
-                        );
-                      }).toList(),
-                    );
-                  }
-                }),
+                          }
+                        });
+                  },
+                );
+              }).toList(),
+            ),
+
             //SizedBox(height: 20.0),
 
             Text(
@@ -279,16 +315,7 @@ class _HomeScreenState extends State<HomeScreen>
 //                Food food = Food.fromJson(foods[index]);
                         Restaurant res = worthCheck[index];
 
-                        return GridCategory(
-                            img: res.image,
-                            isFav: false,
-                            name: res.title,
-                            rating: 5.0,
-                            raters: 23,
-                            ontap: () {
-                              Navigator.pushNamed(context, DetailsScreen.tag,
-                                  arguments: res.uid);
-                            });
+                        return futureGridCategory(res: res);
                       },
                     );
                   }
@@ -302,6 +329,52 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class futureGridCategory extends StatelessWidget {
+  const futureGridCategory({
+    Key key,
+    @required this.res,
+  }) : super(key: key);
+
+  final Restaurant res;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: FirebaseFirestore.instance
+            .collection('review')
+            .where("restoId", isEqualTo: res.uid)
+            .get(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> revsnapshot) {
+          if (revsnapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: Container(child: CircularProgressIndicator()));
+          } else {
+            List<Review> _lst = [];
+            double _sum = 0;
+            double _avg = 0;
+            //_lstRev.clear();
+            //_sumavg = 0;
+            revsnapshot.data.docs.forEach((element) {
+              _lst.add(Review.fromJson(element));
+            });
+            _lst.forEach((element) {
+              _sum += element.stars;
+            });
+            _avg = _sum / _lst.length;
+            return GridCategory(
+                img: res.image,
+                isFav: false,
+                name: res.title,
+                rating: _avg.isFinite ? _avg : 0,
+                raters: _lst.length,
+                ontap: () {
+                  Navigator.pushNamed(context, DetailsScreen.tag,
+                      arguments: res.uid);
+                });
+          }
+        });
+  }
 }
 
 class DishArguments {

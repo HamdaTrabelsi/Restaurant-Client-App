@@ -100,16 +100,9 @@ class _CuisinesScreen extends State<CuisinesScreen> {
                       itemCount: listRest == null ? 0 : listRest.length,
                       itemBuilder: (BuildContext context, int index) {
                         Restaurant resto = listRest[index];
-                        return GridProduct(
-                            img: resto.image,
-                            isFav: false,
-                            name: resto.title,
-                            rating: 5.0,
-                            raters: 23,
-                            ontap: () {
-                              Navigator.pushNamed(context, DetailsScreen.tag,
-                                  arguments: resto.uid);
-                            });
+                        return futureGridCategory(
+                          res: resto,
+                        );
                       },
                     );
                   } else {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:foodz_client/Models/Favourite.dart';
 import 'package:foodz_client/Models/Restaurant.dart';
 import 'package:foodz_client/Screens/DetailsScreen.dart';
+import 'package:foodz_client/Screens/HomeScreen.dart';
 import 'package:foodz_client/utils/Template/Restaurants.dart';
 import 'package:foodz_client/utils/Template/const.dart';
 import 'package:foodz_client/utils/Template/foods.dart';
@@ -98,17 +99,8 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                               }
                               Restaurant resto = Restaurant.fromJson(
                                   restosnapshot.data.data());
-                              return GridProduct(
-                                img: resto.image,
-                                isFav: true,
-                                name: resto.title,
-                                rating: 5.0,
-                                raters: 23,
-                                ontap: () {
-                                  Navigator.pushNamed(
-                                      context, DetailsScreen.tag,
-                                      arguments: resto.uid);
-                                },
+                              return futureGridCategory(
+                                res: resto,
                               );
                             });
                       },
