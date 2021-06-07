@@ -549,7 +549,21 @@ class ReviewCard extends StatelessWidget {
                 user.image,
               ),
             ),
-            title: Text("me"),
+            title: FutureBuilder(
+                future: FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(rev.userId)
+                    .get(),
+                builder:
+                    (context, AsyncSnapshot<DocumentSnapshot> usersnapshot) {
+                  if (usersnapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                        child: Container(child: CircularProgressIndicator()));
+                  }
+                  Utilisateur user =
+                      Utilisateur.fromJson(usersnapshot.data.data());
+                  return Text(user.username);
+                }),
             subtitle: Column(
               children: <Widget>[
                 Row(

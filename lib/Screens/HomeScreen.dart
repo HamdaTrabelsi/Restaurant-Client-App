@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodz_client/Models/Restaurant.dart';
 import 'package:foodz_client/Screens/DetailsScreen.dart';
-import 'package:foodz_client/Screens/DishesScreen.dart';
+import 'package:foodz_client/Screens/CuisinesScreen.dart';
 //import 'package:restaurant_ui_kit/screens/dishes.dart';
 import 'package:foodz_client/Widgets/grid_product.dart';
 import 'package:foodz_client/Widgets/grid_category.dart';
@@ -107,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen>
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (BuildContext context) {
-                          return DishesScreen();
+                          return CuisinesScreen();
                         },
                       ),
                     );
@@ -182,11 +182,14 @@ class _HomeScreenState extends State<HomeScreen>
                 itemBuilder: (BuildContext context, int index) {
                   Map cat = categories[index];
                   return HomeCategory(
-                    icon: cat['icon'],
-                    title: cat['name'],
-                    items: cat['items'].toString(),
-                    isHome: true,
-                  );
+                      icon: cat['icon'],
+                      title: cat['name'],
+                      items: cat['items'].toString(),
+                      isHome: true,
+                      tap: () {
+                        Navigator.pushNamed(context, CuisinesScreen.tag,
+                            arguments: DishArguments("type", cat["name"]));
+                      });
                 },
               ),
             ),
@@ -213,8 +216,11 @@ class _HomeScreenState extends State<HomeScreen>
                   Map cat = categs[index];
 
                   return CategoryItem(
-                    cat: cat,
-                  );
+                      cat: cat,
+                      tap: () {
+                        Navigator.pushNamed(context, CuisinesScreen.tag,
+                            arguments: DishArguments("cuisine", cat["name"]));
+                      });
                 },
               ),
             ),
@@ -274,12 +280,15 @@ class _HomeScreenState extends State<HomeScreen>
                         Restaurant res = worthCheck[index];
 
                         return GridCategory(
-                          img: res.image,
-                          isFav: false,
-                          name: res.title,
-                          rating: 5.0,
-                          raters: 23,
-                        );
+                            img: res.image,
+                            isFav: false,
+                            name: res.title,
+                            rating: 5.0,
+                            raters: 23,
+                            ontap: () {
+                              Navigator.pushNamed(context, DetailsScreen.tag,
+                                  arguments: res.uid);
+                            });
                       },
                     );
                   }
@@ -293,4 +302,11 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class DishArguments {
+  final String type;
+  final String value;
+
+  DishArguments(this.type, this.value);
 }

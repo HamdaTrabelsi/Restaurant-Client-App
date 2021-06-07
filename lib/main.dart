@@ -3,7 +3,7 @@ import 'package:foodz_client/Screens/CartScreen.dart';
 import 'package:foodz_client/Screens/CategoriesScreen.dart';
 import 'package:foodz_client/Screens/CheckoutScreen.dart';
 import 'package:foodz_client/Screens/DetailsScreen.dart';
-import 'package:foodz_client/Screens/DishesScreen.dart';
+import 'package:foodz_client/Screens/CuisinesScreen.dart';
 import 'package:foodz_client/Screens/FavouriteScreen.dart';
 import 'package:foodz_client/Screens/HomeScreen.dart';
 import 'package:foodz_client/Screens/IntroScreen.dart';
@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
           CategoriesScreen.tag: (context) => CategoriesScreen(),
           CheckoutScreen.tag: (context) => CheckoutScreen(),
           DetailsScreen.tag: (context) => DetailsScreen(),
-          DishesScreen.tag: (context) => DishesScreen(),
+          CuisinesScreen.tag: (context) => CuisinesScreen(),
           FavouriteScreen.tag: (context) => FavouriteScreen(),
           NotificationScreen.tag: (context) => NotificationScreen(),
           ProfileScreen.tag: (context) => ProfileScreen(),

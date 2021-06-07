@@ -158,8 +158,7 @@ class _MenuScreen extends State<MenuScreen> {
                                       color: Constants.lightAccent,
                                       fontWeight: FontWeight.bold)),
                               Container(height: 10),
-                              Text(
-                                  "You don't have a menu yet, Start by Adding some Dishes !",
+                              Text("This restaurant doesn't have a menu yet !",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Constants.lightAccent,

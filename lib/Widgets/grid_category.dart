@@ -11,6 +11,7 @@ class GridCategory extends StatelessWidget {
   final bool isFav;
   final double rating;
   final int raters;
+  final Function ontap;
 
   GridCategory(
       {Key key,
@@ -18,7 +19,8 @@ class GridCategory extends StatelessWidget {
       @required this.img,
       @required this.isFav,
       @required this.rating,
-      @required this.raters})
+      @required this.raters,
+      @required this.ontap})
       : super(key: key);
 
   @override
@@ -94,15 +96,7 @@ class GridCategory extends StatelessWidget {
           ),
         ],
       ),
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) {
-              return DetailsScreen();
-            },
-          ),
-        );
-      },
+      onTap: ontap,
     );
   }
 }
