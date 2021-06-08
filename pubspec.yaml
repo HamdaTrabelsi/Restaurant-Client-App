@@ -53,6 +53,9 @@ dependencies:
   sweetsheet: ^0.2.0
   firebase_storage: ^8.0.5
   flutter_native_splash: ^1.1.8+4
+  flutter_mapbox_navigation: ^0.0.24 
+  geocoding: ^2.0.0
+  geolocator: ^7.0.3
 
 flutter_native_splash:
   #color: "#FD825D"

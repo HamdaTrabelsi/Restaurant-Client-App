@@ -6,10 +6,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:foodz_client/Database/Authentication.dart';
 import 'package:foodz_client/Database/UserDB.dart';
+import 'package:foodz_client/Screens/NavigationScreen.dart';
 import 'package:foodz_client/provider/app_provider.dart';
 import 'package:foodz_client/utils/Template/const.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,6 +21,8 @@ import 'package:provider/provider.dart';
 import 'package:sweetsheet/sweetsheet.dart';
 
 final _firestore = FirebaseFirestore.instance;
+final _origin =
+    WayPoint(name: "Way Point 1", latitude: 37.273276, longitude: 9.870051);
 User loggedInUser;
 final googleSignIn = GoogleSignIn();
 final _auth = FirebaseAuth.instance;

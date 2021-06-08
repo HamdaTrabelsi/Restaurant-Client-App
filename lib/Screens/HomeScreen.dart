@@ -6,6 +6,7 @@ import 'package:foodz_client/Models/Restaurant.dart';
 import 'package:foodz_client/Models/Review.dart';
 import 'package:foodz_client/Screens/DetailsScreen.dart';
 import 'package:foodz_client/Screens/CuisinesScreen.dart';
+import 'package:foodz_client/Screens/RestaurantsList.dart';
 //import 'package:restaurant_ui_kit/screens/dishes.dart';
 import 'package:foodz_client/Widgets/grid_product.dart';
 import 'package:foodz_client/Widgets/grid_category.dart';
@@ -282,7 +283,9 @@ class _HomeScreenState extends State<HomeScreen>
                       color: Theme.of(context).accentColor,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, RestaurantsListScreen.tag);
+                  },
                 ),
               ],
             ),

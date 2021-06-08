@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:foodz_client/Database/FavouriteDB.dart';
 import 'package:foodz_client/Models/Favourite.dart';
 import 'package:foodz_client/Models/Restaurant.dart';
@@ -16,10 +17,24 @@ import 'package:foodz_client/utils/Template/const.dart';
 import 'package:foodz_client/utils/Template/foods.dart';
 import 'package:foodz_client/Widgets/badge.dart';
 import 'package:foodz_client/Widgets/smooth_star_rating.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:foodz_client/Screens/BookingWidget.dart';
 
 final _auth = FirebaseAuth.instance;
+Position _currentPosition;
+final _origin =
+    WayPoint(name: "Way Point 1", latitude: 37.273276, longitude: 9.870051);
+
+MapBoxNavigation _directions;
+
+double _distanceRemaining, _durationRemaining;
+MapBoxNavigationViewController _controller;
+bool _routeBuilt = false;
+bool _isNavigating = false;
+String _instruction = "";
+bool _isMultipleStop = false;
+
 FavouriteDB favDB = FavouriteDB();
 User _loggedInUser;
 
@@ -35,6 +50,56 @@ class _RestInfoScreen extends State<RestInfoScreen> {
   List<Review> _reviews = [];
   List<double> _revInfo = [];
 
+  Future<void> getPos() async {
+    _currentPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+  }
+
+  Future<void> _onEmbeddedRouteEvent(e) async {
+    _distanceRemaining = await _directions.distanceRemaining;
+    _durationRemaining = await _directions.durationRemaining;
+
+    switch (e.eventType) {
+      case MapBoxEvent.progress_change:
+        var progressEvent = e.data as RouteProgressEvent;
+        if (progressEvent.currentStepInstruction != null)
+          _instruction = progressEvent.currentStepInstruction;
+        break;
+      case MapBoxEvent.route_building:
+      case MapBoxEvent.route_built:
+        setState(() {
+          _routeBuilt = true;
+        });
+        break;
+      case MapBoxEvent.route_build_failed:
+        setState(() {
+          _routeBuilt = false;
+        });
+        break;
+      case MapBoxEvent.navigation_running:
+        setState(() {
+          _isNavigating = true;
+        });
+        break;
+      case MapBoxEvent.on_arrival:
+        if (!_isMultipleStop) {
+          await Future.delayed(Duration(seconds: 3));
+          await _controller.finishNavigation();
+        } else {}
+        break;
+      case MapBoxEvent.navigation_finished:
+      case MapBoxEvent.navigation_cancelled:
+        setState(() {
+          _routeBuilt = false;
+          _isNavigating = false;
+        });
+        break;
+      default:
+        break;
+    }
+    setState(() {});
+  }
+
   void getCurrentUser() {
     try {
       final user = _auth.currentUser;
@@ -49,9 +114,9 @@ class _RestInfoScreen extends State<RestInfoScreen> {
   void getReviewInfo() {
     try {
       if (_revInfo.isEmpty) {
-        revDB.reviewInfo(restoId: widget.restoId).then((value) => setState(() {
-              _revInfo = value.values.toList();
-            }));
+        revDB.reviewInfo(restoId: widget.restoId).then((value) {
+          _revInfo = value.values.toList();
+        });
       }
     } catch (e) {
       print(e);
@@ -60,6 +125,8 @@ class _RestInfoScreen extends State<RestInfoScreen> {
 
   @override
   void initState() {
+    getPos();
+    _directions = MapBoxNavigation(onRouteEvent: _onEmbeddedRouteEvent);
     getCurrentUser();
     getReviewInfo();
     super.initState();
@@ -113,7 +180,26 @@ class _RestInfoScreen extends State<RestInfoScreen> {
                           right: -10.0,
                           top: 3.0,
                           child: RawMaterialButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              var wayPoints = <WayPoint>[];
+                              wayPoints.add(WayPoint(
+                                  name: "my place",
+                                  latitude: _currentPosition.latitude,
+                                  longitude: _currentPosition.longitude));
+                              wayPoints.add(WayPoint(
+                                  name: resto.title,
+                                  latitude: resto.location.latitude,
+                                  longitude: resto.location.longitude));
+
+                              await _directions.startNavigation(
+                                  wayPoints: wayPoints,
+                                  options: MapBoxOptions(
+                                      mode: MapBoxNavigationMode
+                                          .drivingWithTraffic,
+                                      simulateRoute: false,
+                                      language: "en",
+                                      units: VoiceUnits.metric));
+                            },
                             fillColor: Colors.red,
                             shape: CircleBorder(),
                             elevation: 4.0,
@@ -275,7 +361,9 @@ class _RestInfoScreen extends State<RestInfoScreen> {
                                 children: <Widget>[
                                   ListTile(
                                     title: Text(
-                                      resto.address,
+                                      resto.location.latitude.toString() +
+                                          " " +
+                                          resto.location.longitude.toString(),
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500),
                                     ),
@@ -416,7 +504,7 @@ class _RestInfoScreen extends State<RestInfoScreen> {
                                       );
                                     }
                                   }),
-                              SizedBox(height: 70.0),
+                              SizedBox(height: 170),
                             ],
                           ),
                         ),
@@ -425,6 +513,7 @@ class _RestInfoScreen extends State<RestInfoScreen> {
                   ],
                 ),
               ),
+
               /*bottomNavigationBar: Container(
             height: 50.0,
             child: RaisedButton(

@@ -9,11 +9,13 @@ import 'package:foodz_client/Screens/HomeScreen.dart';
 import 'package:foodz_client/Screens/IntroScreen.dart';
 import 'package:foodz_client/Screens/LoginScreen.dart';
 import 'package:foodz_client/Screens/MainScreen.dart';
+import 'package:foodz_client/Screens/NavigationScreen.dart';
 import 'package:foodz_client/Screens/PlateDetailsScreen.dart';
 import 'package:foodz_client/Screens/ReservationsScreen.dart';
 import 'package:foodz_client/Screens/NotificationScreen.dart';
 import 'package:foodz_client/Screens/ProfileScreen.dart';
 import 'package:foodz_client/Screens/RegisterScreen.dart';
+import 'package:foodz_client/Screens/RestaurantsList.dart';
 import 'package:foodz_client/Screens/WriteReviewScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -79,6 +81,8 @@ class MyApp extends StatelessWidget {
           WriteReview.tag: (context) => WriteReview(),
           ReservationsScreen.tag: (context) => ReservationsScreen(),
           PlateDetailsScreen.tag: (context) => PlateDetailsScreen(),
+          RestaurantsListScreen.tag: (context) => RestaurantsListScreen(),
+          NavigationScreen.tag: (context) => NavigationScreen(),
         },
       );
     });
