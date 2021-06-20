@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:foodz_client/Screens/DetailsScreen.dart';
 //import 'package:restaurant_ui_kit/screens/details.dart';
@@ -37,8 +38,8 @@ class SliderItem extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
-                    child: Image.network(
-                      "$img",
+                    child: CachedNetworkImage(
+                      imageUrl: "$img",
                       fit: BoxFit.cover,
                     ),
                   ),

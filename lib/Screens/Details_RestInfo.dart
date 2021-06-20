@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -170,8 +171,8 @@ class _RestInfoScreen extends State<RestInfoScreen> {
                           width: MediaQuery.of(context).size.width,
                           child: ClipRRect(
                             //borderRadius: BorderRadius.circular(8.0),
-                            child: Image.network(
-                              resto.image,
+                            child: CachedNetworkImage(
+                              imageUrl: resto.image,
                               fit: BoxFit.cover,
                             ),
                           ),

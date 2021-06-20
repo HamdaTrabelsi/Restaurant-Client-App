@@ -59,7 +59,7 @@ class Authentication {
     try {
       if (myUser != null) {
         if (myUser.providerData[0].providerId == "google.com") {
-          await googleSignIn.disconnect();
+          //await googleSignIn.disconnect();
           await googleSignIn.signOut();
         }
       }
@@ -68,12 +68,7 @@ class Authentication {
       Navigator.pop(context);
       Navigator.pushNamed(context, WelcomeScreen.tag);
     } catch (e) {
-      Flushbar(
-        flushbarPosition: FlushbarPosition.TOP,
-        title: "Error",
-        message: e.toString(),
-        duration: Duration(seconds: 3),
-      )..show(context);
+      print(e);
     }
   }
 
