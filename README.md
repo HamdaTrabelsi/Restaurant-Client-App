@@ -2,7 +2,7 @@
 
 Projet PPE: Partie Client
 
-Demo APK : https://drive.google.com/file/d/1yajqtKfJBKAqKeG-e6Atm71zltdxFvRz/view?usp=sharing
+Demo APK : https://drive.google.com/file/d/19rxlM2zKWd9kxpP64SaNUWNB7Y7fRPbk/view?usp=sharing
 
 ## Getting Started
 
